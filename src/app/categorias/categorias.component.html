@@ -1,0 +1,14 @@
+<p>categorias works!</p>
+<div>
+  <h2>Administración de Categorías</h2>
+  <input type="text" [(ngModel)]="nuevaCategoria" placeholder="Nueva categoría" />
+  <button (click)="agregarCategoria()">Agregar</button>
+</div>
+
+<ul>
+  <li *ngFor="let categoria of categorias">
+    <input type="text" [(ngModel)]="categoria.descripcion" />
+    <button (click)="editarCategoria(categoria.idCategoria, categoria.descripcion)">Guardar</button>
+    <button (click)="eliminarCategoria(categoria.idCategoria)">Eliminar</button>
+  </li>
+</ul>
