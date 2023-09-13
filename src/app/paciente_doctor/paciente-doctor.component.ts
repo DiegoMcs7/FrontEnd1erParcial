@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Persona } from '../model/paciente_doctor.model';
-import { PersonaService } from '../service/paciente_doctor.service';
+import { PersonaService } from '../service/paciente_doctor.service'
 
 @Component({
   selector: 'app-persona',
@@ -8,18 +8,10 @@ import { PersonaService } from '../service/paciente_doctor.service';
   styleUrls: ['./paciente-doctor.component.css']
 })
 export class PersonaComponent implements OnInit {
-  nuevaPersona: Persona = new Persona();
+  nuevaPersona: Persona = new Persona(); // Inicializa nuevaPersona sin argumentos
   personas: Persona[] = [];
 
-  constructor(private personaService: PersonaService) {
-    // Inicializa los campos de nuevaPersona con valores predeterminados
-    this.nuevaPersona.nombre = 'Nombre Predeterminado';
-    this.nuevaPersona.apellido = 'Apellido Predeterminado';
-    this.nuevaPersona.telefono = '1234567890';
-    this.nuevaPersona.email = 'correo@example.com';
-    this.nuevaPersona.cedula = '123456789';
-    this.nuevaPersona.flag_es_doctor = false;
-  }
+  constructor(private personaService: PersonaService) {}
 
   ngOnInit(): void {
     this.cargarPersonas();
@@ -31,21 +23,23 @@ export class PersonaComponent implements OnInit {
 
   agregarPersona(): void {
     if (
-      this.nuevaPersona.nombre.trim() !== '' &&
-      this.nuevaPersona.apellido.trim() !== '' &&
-      this.nuevaPersona.telefono.trim() !== '' &&
-      this.nuevaPersona.email.trim() !== '' &&
-      this.nuevaPersona.cedula.trim() !== ''
+      this.nuevaPersona.nombre &&
+      this.nuevaPersona.apellido &&
+      this.nuevaPersona.telefono &&
+      this.nuevaPersona.email &&
+      this.nuevaPersona.cedula
     ) {
       this.personaService.agregarPersona(this.nuevaPersona);
-      this.nuevaPersona = new Persona(); // Crea una nueva instancia de Persona en blanco
+      this.nuevaPersona = new Persona(); // Limpia los campos del formulario después de agregar
       this.cargarPersonas();
     }
   }
 
   editarPersona(persona: Persona): void {
-    this.personaService.editarPersona(persona);
-    this.cargarPersonas();
+    if (persona.idPersona !== undefined) {
+      this.personaService.editarPersona(persona.idPersona, persona);
+      this.cargarPersonas();
+    }
   }
 
   eliminarPersona(id: number): void {
@@ -53,4 +47,3 @@ export class PersonaComponent implements OnInit {
     this.cargarPersonas();
   }
 }
-

@@ -1,20 +1,20 @@
 export class Persona {
-  idPersona: number;
-  nombre: string;
-  apellido: string;
-  telefono: string;
-  email: string;
-  cedula: string;
-  flag_es_doctor: boolean;
+  idPersona?: number;
+  nombre?: string;
+  apellido?: string;
+  telefono?: string;
+  email?: string;
+  cedula?: string;
+  flag_es_doctor?: boolean;
 
   constructor(
-    idPersona: number,
-    nombre: string,
-    apellido: string,
-    telefono: string,
-    email: string,
-    cedula: string,
-    flag_es_doctor: boolean
+    idPersona?: number,
+    nombre?: string,
+    apellido?: string,
+    telefono?: string,
+    email?: string,
+    cedula?: string,
+    flag_es_doctor?: boolean
   ) {
     this.idPersona = idPersona;
     this.nombre = nombre;

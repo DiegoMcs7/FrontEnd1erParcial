@@ -8,23 +8,25 @@ export class PersonaService {
   private personas: Persona[] = [];
   private nextId: number = 1;
 
-  agregarPersona(persona: Persona): void {
-    persona.idPersona = this.nextId++;
-    this.personas.push(persona);
-  }
+  constructor() {}
 
   getPersonas(): Persona[] {
     return this.personas;
   }
 
+  agregarPersona(nuevaPersona: Persona): void {
+    nuevaPersona.idPersona = this.nextId++;
+    this.personas.push(nuevaPersona);
+  }
+
   editarPersona(id: number, nuevaPersona: Persona): void {
-    const index = this.personas.findIndex((p) => p.idPersona === id);
-    if (index !== -1) {
-      this.personas[index] = nuevaPersona;
+    const personaIndex = this.personas.findIndex(p => p.idPersona === id);
+    if (personaIndex !== -1) {
+      this.personas[personaIndex] = nuevaPersona;
     }
   }
 
   eliminarPersona(id: number): void {
-    this.personas = this.personas.filter((p) => p.idPersona !== id);
+    this.personas = this.personas.filter(p => p.idPersona !== id);
   }
 }
