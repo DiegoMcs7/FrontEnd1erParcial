@@ -8,7 +8,7 @@
 <ul>
   <li *ngFor="let categoria of categorias">
     <input type="text" [(ngModel)]="categoria.descripcion" />
-    <button (click)="editarCategoria(categoria.idCategoria, categoria.descripcion)">Guardar</button>
+    <button (click)="editarCategoria(categoria.idCategoria, categoria.descripcion)">Editar</button>
     <button (click)="eliminarCategoria(categoria.idCategoria)">Eliminar</button>
   </li>
 </ul>
