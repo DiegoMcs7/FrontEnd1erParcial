@@ -3,18 +3,21 @@
   <h2>Administración de Personas</h2>
 
   <!-- Formulario para agregar una nueva persona -->
-  <div class="form-group">
+  <div class="form-group" id="form_agregar_persona">
     <input type="text" class="form-control" [(ngModel)]="nuevaPersona.nombre" placeholder="Nombre" />
     <input type="text" class="form-control" [(ngModel)]="nuevaPersona.apellido" placeholder="Apellido" />
     <input type="text" class="form-control" [(ngModel)]="nuevaPersona.telefono" placeholder="Teléfono" />
     <input type="email" class="form-control" [(ngModel)]="nuevaPersona.email" placeholder="Email" />
     <input type="text" class="form-control" [(ngModel)]="nuevaPersona.cedula" placeholder="Cédula" />
-    <input type="checkbox" class="form-check-input" [(ngModel)]="nuevaPersona.flag_es_doctor" placeholder="Es Doctor"/>
-    <button class="btn btn-primary" (click)="agregarPersona()">Agregar Persona</button>
+    <div class="mb-3 form-check" style="text-align: left;">
+      <label class="form-check-label" for="exampleCheck1">Es doctor</label>
+      <input type="checkbox" id="exampleCheck1" class="form-check-input" [(ngModel)]="nuevaPersona.flag_es_doctor" placeholder="Es Doctor"/>
+    </div>
+    <button class="btn btn-primary mt-2 mb-4" (click)="agregarPersona()">Agregar Persona</button>
   </div>
 
   <!-- Lista de personas -->
-  <table class="table">
+  <table datatable [dtOptions]="dtoptions" class="table table-bordered">
     <thead>
       <tr>
         <th>Nombre</th>

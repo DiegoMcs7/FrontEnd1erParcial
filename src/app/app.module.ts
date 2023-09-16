@@ -15,6 +15,8 @@ import { ReservaComponent } from './reservas/reservas.component';
 import { ReservaService } from './service/reserva.service';
 import { NuevaReservaComponent } from './reservas/nueva-reserva/nueva-reserva.component';
 import { ModificarReservaComponent } from './reservas/modificar-reserva/modificar-reserva.component';
+import { DataTablesModule } from 'angular-datatables';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,8 +33,8 @@ import { ModificarReservaComponent } from './reservas/modificar-reserva/modifica
     RouterModule,
     HttpClientModule,
     NgxPaginationModule,
-    NgbModule
-
+    NgbModule,
+    DataTablesModule
   ],
   providers: [
     CategoriaService,
