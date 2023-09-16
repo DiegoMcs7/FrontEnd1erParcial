@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { listadatos } from '../model/datos';
 import { Persona } from '../model/paciente_doctor.model';
+import { PersonaService } from '../service/paciente_doctor.service'
 import { Reserva } from '../model/reserva.model';
 import { ReservaService } from '../service/reserva.service';
+
 
 type Filtro = {
   fechaDesde ?: string,
@@ -26,20 +28,28 @@ export class ReservaComponent implements OnInit {
   }
   next = "Siguiente"
   back = "Atras"
+  personas: Persona[] = [];
+  personaSeleccionada: number | undefined;
   doctor: Persona = new Persona();
   paciente: Persona = new Persona();
   filtros: Filtro = {};
-  constructor(private reservaService: ReservaService) {
+  constructor(private reservaService: ReservaService, private personaService: PersonaService) {
     const today = new Date();
     const todayString = `${today.getFullYear()}${today.getMonth() < 9 ? '0' : ''}${today.getMonth() + 1}${today.getDate() <= 9 ? '0' : ''}${today.getDate()}`;
     this.filtros.fechaDesde = todayString;
     this.filtros.fechaHasta = todayString;
   }
+  
 
   ngOnInit(): void {
     this.getReservas();
+    this.cargarPersonas();
   }
 
+  cargarPersonas(): void {
+    this.personas = this.personaService.getPersonas();
+  }
+  
   getReservas() {
     let currentPage = this.config.currentPage;
     let itemsPerPage = this.config.itemsPerPage;

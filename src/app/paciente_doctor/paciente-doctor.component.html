@@ -9,7 +9,7 @@
     <input type="text" class="form-control" [(ngModel)]="nuevaPersona.telefono" placeholder="Teléfono" />
     <input type="email" class="form-control" [(ngModel)]="nuevaPersona.email" placeholder="Email" />
     <input type="text" class="form-control" [(ngModel)]="nuevaPersona.cedula" placeholder="Cédula" />
-    <input type="text" class="form-control" [(ngModel)]="nuevaPersona.flag_es_doctor" placeholder="Es Doctor" />
+    <input type="checkbox" class="form-check-input" [(ngModel)]="nuevaPersona.flag_es_doctor" placeholder="Es Doctor"/>
     <button class="btn btn-primary" (click)="agregarPersona()">Agregar Persona</button>
   </div>
 

@@ -28,6 +28,9 @@ class Fecha {
 })
 export class NuevaReservaComponent implements OnInit {
   public data: Reserva[] = [];
+  public hola: Persona[] = [];
+  personas: Persona[] = [];
+
   public columns = ["Fecha","Hora inicio","Hora fin","Doctor","Paciente","Acciones"];
   reserva: Reserva = new Reserva();
   doctor: Persona = new Persona();

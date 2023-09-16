@@ -6,5 +6,5 @@ export class Persona {
   telefono!: string;
   email!: string;
   cedula!: string;
-  flag_es_doctor!: boolean;
+  flag_es_doctor: boolean = true; // Establece el valor por defecto en true
 }
