@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col-md-12 text-end">
+      <button type="button" class="btn btn-primary" routerLink="/reserva/nuevo">Nueva Reserva</button>
+  </div>
+</div>
+
+<form>
+  <div class="row">
+      <div class="form-group col-6">
+          <label for="doctor">Doctor</label>
+          <div class="input-group">
+              <input type="text" class="form-control" id="doctor" name="doctor" readonly
+                  [(ngModel)]="doctor.fullName">
+              <div class="input-group-append">
+                  <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#doctorModal"
+                      type="button">Buscar</button>
+              </div>
+          </div>
+      </div>
+      <div class="form-group col-6">
+          <label for="paciente">Paciente</label>
+          <div class="input-group">
+              <input type="text" class="form-control" id="paciente" readonly name="paciente"
+                  [(ngModel)]="paciente.fullName">
+              <div class="input-group-append">
+                  <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#pacienteModal"
+                      type="button">Buscar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-6">
+          <label for="fechaDesde">Desde</label>
+          <input type="date" class="form-control" id="fechaDesde" name="fechaDesde" [(ngModel)]="filtros.fechaDesde">
+      </div>
+      <div class="form-group col-6">
+          <label for="fechaHasta">Hasta</label>
+          <input type="date" class="form-control" id="fechaHasta" name="fechaHasta" [(ngModel)]="filtros.fechaHasta">
+      </div>
+  </div>
+</form>
+
+<div class="row">
+  <div class="col-md-12 text-end">
+      <button type="button" class="btn btn-info mt-2" (click)="buscar()">Buscar</button>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table">
+      <thead>
+          <tr>
+          <th scope="col" *ngFor="let header of columns" >{{header}}</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let reserva of data | paginate: config">
+          <td>{{reserva.fecha}}</td>
+          <td>{{reserva.horaInicio}}</td>
+          <td>{{reserva.horaFin}}</td>
+          <td>{{reserva.idDoctor.nombre + " " + reserva.idDoctor.apellido }}</td>
+          <td>{{reserva.idPaciente.nombre + " " + reserva.idPaciente.apellido }}</td>
+          <td>
+              <button class="btn btn-outline-danger mx-2" (click)="cancelarReserva(reserva)">Cancelar</button>
+              <button class="btn btn-outline-success mx-2" [routerLink]="[reserva.idReserva, 'editar']">Modificar</button>
+          </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+<pagination-controls
+  [previousLabel]="back"
+  [nextLabel]="next"
+  (pageChange)="pageChanged($event)">
+</pagination-controls>
+
+<div class="modal fade" id="doctorModal" tabindex="-1" aria-hidden="true">
+  <app-persona (seleccionarDoctorEvent)="seleccionarDoctor($event)"></app-persona>
+</div>
+
+<div class="modal fade" id="pacienteModal" tabindex="-1" aria-hidden="true">
+  <app-persona (seleccionarPacienteEvent)="seleccionarPaciente($event)"></app-persona>
+</div>
