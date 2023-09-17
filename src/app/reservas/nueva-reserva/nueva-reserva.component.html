@@ -10,10 +10,14 @@
               <div class="form-group col-6" >
                   <label for="doctor">Doctor</label>
                   <div class="input-group">
-                      <input type="text" class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor.fullName">
-                      <div class="input-group-append">
-                          <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#doctorModal" type="button">Buscar</button>
-                      </div>
+                    <select class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor.idPersona">
+                      <option selected disabled="true">--Please Select --</option>
+                      <ng-container *ngFor="let persona of personas">
+                          <option [value]="persona.idPersona" *ngIf="persona.flag_es_doctor">
+                            {{ persona.nombre }} {{ persona.apellido }}
+                          </option>
+                        </ng-container>
+                  </select>
                   </div>
               </div>
               <div class="form-group col-6" >
@@ -32,26 +36,26 @@
               <div class="form-group col-6">
                   <label for="paciente">Paciente</label>
                   <div class="input-group">
-                      <input type="text" class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente.fullName">
-                      <div class="input-group-append">
-                          <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#pacienteModal" type="button" >Buscar</button>
-                      </div>
+                    <select class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente.idPersona">
+                      <option selected disabled="true">--Please Select --</option>
+                      <ng-container *ngFor="let persona of personas">
+                          <option [value]="persona.idPersona" *ngIf="!persona.flag_es_doctor">
+                            {{ persona.nombre }} {{ persona.apellido }}
+                          </option>
+                        </ng-container>
+                  </select>
                   </div>
               </div>
               <div class="form-group col-3" >
                   <label for="doctor">Hora de inicio</label>
                   <div class="input-group">
-                      <input type="number" class="form-control" name="inicio-hora" placeholder="HH" readonly [(ngModel)]="horaInicio.hora">
-                      <p class="m-1">:</p>
-                      <input type="number" class="form-control" name="inicio-minuto" placeholder="MM" readonly [(ngModel)]="horaInicio.minuto">
+                      <input min="9" max="20" type="number" class="form-control" name="inicio-hora" placeholder="HH" [(ngModel)]="horaInicio.hora" (change)="cambioInicio()">
                     </div>
               </div>
               <div class="col-3">
                   <label for="doctor">Hora de fin</label>
                   <div class="input-group">
-                      <input type="number" class="form-control" name="fin-hora" placeholder="HH" readonly [(ngModel)]="horaFin.hora">
-                      <p class="m-1">:</p>
-                      <input type="number" class="form-control" name="fin-minuto" placeholder="MM" readonly [(ngModel)]="horaFin.minuto">
+                      <input min="10" max="21" type="number" class="form-control" name="fin-hora" placeholder="HH" [(ngModel)]="horaFin.hora" (change)="cambioFin()">
                     </div>
               </div>
           </div>
@@ -73,8 +77,8 @@
                   <td>{{group.fecha}}</td>
                   <td>{{group.horaInicio}}</td>
                   <td>{{group.horaFin}}</td>
-                  <td>{{group.idDoctor?.nombre + " " + group.idDoctor?.apellido }}</td>
-                  <td>{{group.idPaciente?.nombre + " " + group.idPaciente?.apellido }}</td>
+                  <td>{{group.idDoctor.nombre + " " + group.idDoctor.apellido }}</td>
+                  <td>{{group.idPaciente.nombre + " " + group.idPaciente.apellido }}</td>
                   <td>
                       <button class="btn btn-outline-success mx-2" (click)="seleccionarTurno(group.horaInicio, group.horaFin)">Seleccionar</button>
                   </td>

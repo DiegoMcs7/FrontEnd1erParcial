@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Persona } from 'src/app/model/paciente_doctor.model';
+import { PersonaService } from '../../service/paciente_doctor.service'
 import { Reserva, ReservaPostBody } from 'src/app/model/reserva.model';
 import { ReservaService } from 'src/app/service/reserva.service';
 
 class Hora {
   hora!: number;
-  minuto!: number;
+  minuto: number = 0;
 }
 
 class Fecha {
@@ -32,6 +33,7 @@ export class NuevaReservaComponent implements OnInit {
   personas: Persona[] = [];
 
   public columns = ["Fecha","Hora inicio","Hora fin","Doctor","Paciente","Acciones"];
+  reservas: Reserva[] = []
   reserva: Reserva = new Reserva();
   doctor: Persona = new Persona();
   paciente: Persona = new Persona();
@@ -45,9 +47,14 @@ export class NuevaReservaComponent implements OnInit {
   }
   next = "Siguiente"
   back = "Atras"
-  constructor(private reservaService: ReservaService) { }
+  constructor(private reservaService: ReservaService, private personaService: PersonaService) { }
 
   ngOnInit(): void {
+    this.cargarPersonas();
+  }
+
+  cargarPersonas(): void {
+    this.personas = this.personaService.getPersonas();
   }
 
   onChangeHoraInicio() {
@@ -55,7 +62,7 @@ export class NuevaReservaComponent implements OnInit {
   }
 
   getDateString() {
-    return `${this.fecha.year}${this.fecha.month <= 9 ? '0' : ''}${this.fecha.month}${this.fecha.day <= 9 ? '0' : ''}${this.fecha.day}`;
+    return `${this.fecha.year}/${this.fecha.month <= 9 ? '0' : ''}${this.fecha.month}/${this.fecha.day <= 9 ? '0' : ''}${this.fecha.day}`;
   }
 
   onDateChange() {
@@ -67,14 +74,10 @@ export class NuevaReservaComponent implements OnInit {
     let reservaBody = new ReservaPostBody();
 
     reservaBody.fechaCadena = this.getDateString();
-    reservaBody.horaInicioCadena = `${this.horaInicio.hora <= 9 ? '0' : ''}${this.horaInicio.hora}${this.horaInicio.minuto <= 9 ? '0' : ''}${this.horaInicio.minuto}`;
-    reservaBody.horaFinCadena = `${this.horaFin.hora}${this.horaFin.minuto}`;
-    reservaBody.idPaciente = {
-      idPersona: this.paciente.idPersona,
-    };
-    reservaBody.idDoctor = {
-      idPersona: this.doctor.idPersona,
-    };
+    reservaBody.horaInicioCadena = `${this.horaInicio.hora <= 9 ? '0' : ''}${this.horaInicio.hora}:0${this.horaInicio.minuto}`;
+    reservaBody.horaFinCadena = `${this.horaFin.hora <= 9 ? '0' : ''}${this.horaFin.hora}:0${this.horaFin.minuto}`;
+    reservaBody.idPaciente = this.paciente;
+    reservaBody.idDoctor = this.doctor;
 
     this.reservaService.postReserva(reservaBody).subscribe((data: Reserva) => console.log(JSON.stringify(data)));
   }
@@ -113,6 +116,13 @@ export class NuevaReservaComponent implements OnInit {
 
   pageChanged(event: number){
     this.config.currentPage = event;
+  }
+
+  cambioFin() {
+    this.horaInicio.hora = this.horaFin.hora - 1;
+  }
+  cambioInicio() {
+    this.horaFin.hora = this.horaInicio.hora + 1;
   }
 
 }

@@ -3,7 +3,7 @@ import { Categoria } from 'src/app/model/categoria.model';
 import { Ficha } from 'src/app/model/fichas';
 import { Persona } from 'src/app/model/paciente_doctor.model';
 import { CategoriaService } from 'src/app/service/categoria.service';
-import { ServicefichaService } from 'src/app/service/serviceficha.service';
+import { ServicefichaService } from '../../service/serviceficha.service';
 
 @Component({
   selector: 'app-nuevaficha',
