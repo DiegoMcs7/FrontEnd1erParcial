@@ -5,12 +5,12 @@
 export const environment = {
   production: false,
   firebaseConfig : {
-    apiKey: "AIzaSyDR6EXwss6pFLxRPfHNcHdQ15d2ZH67vAM",
-    authDomain: "seguimiento-pacientes-cb5f3.firebaseapp.com",
-    projectId: "seguimiento-pacientes-cb5f3",
-    storageBucket: "seguimiento-pacientes-cb5f3.appspot.com",
-    messagingSenderId: "943303867418",
-    appId: "1:943303867418:web:d0a2e9cd7a1de0199225a3"
+    apiKey: "AIzaSyCVnSy7pONem8FWdJT02F7r9f5NqHsacgc",
+    authDomain: "seguimiento-paciente.firebaseapp.com",
+    projectId: "seguimiento-paciente",
+    storageBucket: "seguimiento-paciente.appspot.com",
+    messagingSenderId: "893967740450",
+    appId: "1:893967740450:web:9e3b05dd42cad56a73647b"
   }
 };
 

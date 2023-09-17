@@ -74,7 +74,9 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   cargarPersonas(): void {
-    this.personas = this.personaService.getPersonas();
+    this.personaService.getPersonas().subscribe((data: Persona[]) => {
+      this.personas = data;
+    });
   }
 
   agregarPersona(): void {

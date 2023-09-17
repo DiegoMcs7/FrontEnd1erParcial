@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Persona } from '../model/paciente_doctor.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,8 +14,20 @@ export class PersonaService {
   constructor(private angularFirestore: AngularFirestore) {}
 
 
-  getPersonas(): Persona[] {
-    return this.personas;
+  getPersonas(): Observable<Persona[]> {
+    return this.angularFirestore
+      .collection("persona-collection")
+      .snapshotChanges()
+      .pipe(
+        map(actions => {
+          // Mapear las DocumentChangeAction a objetos Persona
+          return actions.map(action => {
+            const data = action.payload.doc.data() as Persona; // Ajusta el tipo según tus datos reales
+            const id = action.payload.doc.id;
+            return { id, ...data };
+          });
+        })
+      );
   }
 
   // agregarPersona(nuevaPersona: Persona): void {
@@ -31,7 +44,7 @@ export class PersonaService {
       cedula: nuevaPersona.cedula,
       flag_es_doctor: nuevaPersona.flag_es_doctor
     };
-  
+
     return new Promise<any>((resolve, reject) => {
       this.angularFirestore
         .collection("persona-collection")
@@ -46,7 +59,7 @@ export class PersonaService {
         });
     });
   }
-  
+
 
   editarPersona(id: number, nuevaPersona: Persona): void {
     const personaIndex = this.personas.findIndex(p => p.idPersona === id);

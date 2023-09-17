@@ -48,7 +48,9 @@ export class ReservaComponent implements OnInit {
   }
 
   cargarPersonas(): void {
-    this.personas = this.personaService.getPersonas();
+    this.personaService.getPersonas().subscribe((data: Persona[]) => {
+      this.personas = data;
+    });
   }
 
   getReservas() {
