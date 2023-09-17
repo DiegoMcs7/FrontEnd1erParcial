@@ -20,6 +20,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FichaComponent } from './ficha/ficha.component';
 import { NuevafichaComponent } from './ficha/nuevaficha/nuevaficha.component';
 import { ModificarfichaComponent } from './ficha/modificarficha/modificarficha.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,9 @@ import { ModificarfichaComponent } from './ficha/modificarficha/modificarficha.c
     HttpClientModule,
     NgxPaginationModule,
     NgbModule,
-    DataTablesModule
+    DataTablesModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
   ],
   providers: [
     CategoriaService,
