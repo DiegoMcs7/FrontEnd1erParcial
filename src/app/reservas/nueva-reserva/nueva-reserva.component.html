@@ -10,7 +10,7 @@
               <div class="form-group col-6" >
                   <label for="doctor">Doctor</label>
                   <div class="input-group">
-                      <input type="text" class="form-control" id="doctor" name="doctor" readonly [(ngModel)]="doctor.fullName">
+                      <input type="text" class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor.fullName">
                       <div class="input-group-append">
                           <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#doctorModal" type="button">Buscar</button>
                       </div>
@@ -32,7 +32,7 @@
               <div class="form-group col-6">
                   <label for="paciente">Paciente</label>
                   <div class="input-group">
-                      <input type="text" class="form-control" id="paciente" readonly name="paciente" [(ngModel)]="paciente.fullName">
+                      <input type="text" class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente.fullName">
                       <div class="input-group-append">
                           <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#pacienteModal" type="button" >Buscar</button>
                       </div>

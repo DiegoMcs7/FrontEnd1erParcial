@@ -29,7 +29,8 @@ export class ReservaComponent implements OnInit {
   next = "Siguiente"
   back = "Atras"
   personas: Persona[] = [];
-  personaSeleccionada: number | undefined;
+  personaSeleccionada1: number | undefined;
+  personaSeleccionada2: number | undefined;
   doctor: Persona = new Persona();
   paciente: Persona = new Persona();
   filtros: Filtro = {};
@@ -39,7 +40,7 @@ export class ReservaComponent implements OnInit {
     this.filtros.fechaDesde = todayString;
     this.filtros.fechaHasta = todayString;
   }
-  
+
 
   ngOnInit(): void {
     this.getReservas();
@@ -49,7 +50,7 @@ export class ReservaComponent implements OnInit {
   cargarPersonas(): void {
     this.personas = this.personaService.getPersonas();
   }
-  
+
   getReservas() {
     let currentPage = this.config.currentPage;
     let itemsPerPage = this.config.itemsPerPage;
