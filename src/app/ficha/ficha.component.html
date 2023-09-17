@@ -1,0 +1,79 @@
+<p>ficha works!</p>
+<div class="row">
+  <div class="col-md-12 text-end">
+    <button type="button" class="btn btn-primary" routerLink="/ficha/nuevo">Nueva Ficha</button>  </div>
+</div>
+<form>
+  <div class="row">
+    <div class="form-group col-6" >
+        <label for="doctor">Doctor</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="doctor" name="doctor" readonly [(ngModel)] = "doctor.fullName">
+            <div class="input-group-append">
+                <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#doctorModal" type="button">Buscar</button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-6">
+        <label for="paciente">Paciente</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="paciente" readonly name="paciente" [(ngModel)]="paciente.fullName">
+            <div class="input-group-append">
+                <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#pacienteModal" type="button" >Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+  <div class="form-group col-6">
+    <label for="fechaDesde">Desde</label>
+    <input type="date" class="form-control" id="fechaDesde"  name="fechaDesde" [(ngModel)]="filtros.fechaDesde">
+  </div>
+  <div class="form-group col-6">
+    <label for="fechaHasta">Hasta</label>
+    <input type="date" class="form-control" id="fechaHasta"  name="fechaHasta" [(ngModel)]="filtros.fechaHasta">
+  </div>
+</div>
+<div class="row">
+  <div class="form-group col-6">
+      <label for="categoria">Categoria</label>
+      <select class="form-select" id="categoria" name="categoria" [(ngModel)]="categoria" (ngModelChange)="getCategorias()">
+          <option *ngFor="let categoria of categorias" [ngValue]="categoria">{{categoria.descripcion}}</option>
+      </select>
+  </div>
+
+</div>
+</form>
+
+
+<div class="row">
+  <div class="col-md-12 text-end">
+    <button type="button" class="btn btn-info mt-2" (click)="buscar()">Buscar</button>
+  </div>
+</div>
+
+
+<div class="table-responsive">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col" *ngFor="let header of columns" >{{header}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let group of data | paginate: config">
+      <td>{{group.fechaHora.split(" ")[0]}}</td>
+      <td>{{group.idDoctor.nombre + " " + group.idDoctor.apellido }}</td>
+      <td>{{group.idPaciente.nombre + " " + group.idPaciente.apellido }}</td>
+      <!-- <td>{{group.idCategoria.descripcion }}</td> -->
+      <td><button class="btn  btn-outline-success"  [routerLink]="[group.idFichaClinica,'editar']">Editar</button></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<pagination-controls
+  id="paginationFicha"
+  [previousLabel]="back"
+  [nextLabel]="next"
+  (pageChange)="pageChanged($event)">
+</pagination-controls>

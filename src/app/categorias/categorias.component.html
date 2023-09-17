@@ -1,13 +1,28 @@
-<div>
-  <h3 style="margin-bottom: 20px;">Administración de Categorías</h3>
-  <input type="text" [(ngModel)]="nuevaCategoria" placeholder="Nueva categoría" />
-  <button (click)="agregarCategoria()">Agregar</button>
-</div>
+<p>categorias works!</p>
+<div class="container">
+  <h2>Administración de Categorias</h2>
 
-<ul style=" margin-top: 20px;">
-  <li *ngFor="let categoria of categorias">
-    <input type="text" [(ngModel)]="categoria.descripcion" />
-    <button (click)="editarCategoria(categoria.idCategoria, categoria.descripcion)">Editar</button>
-    <button (click)="eliminarCategoria(categoria.idCategoria)">Eliminar</button>
-  </li>
-</ul>
+  <!-- Formulario para agregar una nueva categoria -->
+  <div class="form-group" id="form_agregar_persona">
+    <input type="text" class="form-control" [(ngModel)]="nuevaCategoria" placeholder="Nombre" />
+    <button class="btn btn-primary mt-2 mb-4" (click)="agregarCategoria()">Agregar Categoria</button>
+  </div>
+
+  <!-- Lista de personas -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Descripcion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let categoria of categorias$ | async">
+        <td><input type="text" [(ngModel)]="categoria.descripcion" /></td>
+        <td>
+          <button class="btn btn-success" (click)="editarCategoria(categoria.idCategoria, categoria.descripcion)">Editar</button>
+          <button class="btn btn-danger" (click)="eliminarCategoria(categoria.idCategoria)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

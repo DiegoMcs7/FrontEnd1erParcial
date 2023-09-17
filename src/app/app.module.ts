@@ -17,6 +17,9 @@ import { NuevaReservaComponent } from './reservas/nueva-reserva/nueva-reserva.co
 import { ModificarReservaComponent } from './reservas/modificar-reserva/modificar-reserva.component';
 import { DataTablesModule } from 'angular-datatables';
 import { NavbarComponent } from './navbar/navbar.component';
+import { FichaComponent } from './ficha/ficha.component';
+import { NuevafichaComponent } from './ficha/nuevaficha/nuevaficha.component';
+import { ModificarfichaComponent } from './ficha/modificarficha/modificarficha.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { NavbarComponent } from './navbar/navbar.component';
     ReservaComponent,
     NuevaReservaComponent,
     ModificarReservaComponent,
-    NavbarComponent
+    NavbarComponent,
+    FichaComponent,
+    NuevafichaComponent,
+    ModificarfichaComponent
   ],
   imports: [
     BrowserModule,
