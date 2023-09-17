@@ -16,6 +16,7 @@ import { ReservaService } from './service/reserva.service';
 import { NuevaReservaComponent } from './reservas/nueva-reserva/nueva-reserva.component';
 import { ModificarReservaComponent } from './reservas/modificar-reserva/modificar-reserva.component';
 import { DataTablesModule } from 'angular-datatables';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { DataTablesModule } from 'angular-datatables';
     PersonaComponent,
     ReservaComponent,
     NuevaReservaComponent,
-    ModificarReservaComponent
+    ModificarReservaComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

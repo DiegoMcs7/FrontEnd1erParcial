@@ -8,6 +8,7 @@ import { NuevaReservaComponent } from './reservas/nueva-reserva/nueva-reserva.co
 import { ReservaComponent } from './reservas/reservas.component';
 
 const routes: Routes = [
+  {path: '', redirectTo : 'reservas', pathMatch : 'full'},
   { path: 'categorias', component: CategoriasComponent },
   { path: 'personas', component: PersonaComponent },
   { path: 'reservas', component: ReservaComponent },
