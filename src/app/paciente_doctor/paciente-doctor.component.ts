@@ -10,15 +10,16 @@ import { Subject } from 'rxjs';
   styleUrls: ['./paciente-doctor.component.css']
 })
 export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective | undefined;
-  dtTrigger: Subject<any> = new Subject<any>();
   nuevaPersona: Persona = new Persona(); // Inicializa nuevaPersona sin argumentos
   personas: Persona[] = [];
   constructor(private personaService: PersonaService) {}
-
+  @ViewChild(DataTableDirective, { static: false })
+  dtElement: DataTableDirective | undefined;
   dtOptions:DataTables.Settings={}
+  dtTrigger: Subject<any> = new Subject<any>();
+
   ngOnInit(): void {
+    this.cargarPersonas();
     this.dtOptions = {
         pagingType: 'full_numbers',
         language: {
@@ -36,7 +37,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
           { searchable: false }, // Columna 6 (Acciones): No es una columna ordenable
         ],
     }
-    this.cargarPersonas();
+    
   }
   ngAfterViewInit(): void {
     this.dtTrigger.next(null);
@@ -48,23 +49,6 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   rerender(): void {
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      language: {
-        url:'//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-      },
-      searching: true, // Habilita la búsqueda
-      // Otras opciones de configuración si las tienes
-      columns: [
-        { searchable: true }, // Columna 0 (nombre): Habilita la búsqueda
-        { searchable: true }, // Columna 1 (apellido): Habilita la búsqueda
-        { searchable: true }, // Columna 2 (teléfono): Habilita la búsqueda
-        { searchable: true }, // Columna 3 (email): Habilita la búsqueda
-        { searchable: true }, // Columna 4 (cedula): Habilita la búsqueda
-        { searchable: false }, // Columna 5 (Es doctor?): Habilita la búsqueda
-        { searchable: false }, // Columna 6 (Acciones): No es una columna ordenable
-      ],
-  }
     this.dtElement?.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destruye la tabla primero
       dtInstance.destroy();
@@ -74,8 +58,9 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   cargarPersonas(): void {
-    this.personaService.getPersonas().subscribe((data: Persona[]) => {
-      this.personas = data;
+    this.personaService.getPersonas().subscribe((personas: Persona[]) => {
+      this.personas = personas; // Asigna el resultado a la variable personas
+      this.rerender(); // Inicializa DataTables después de cargar los datos
     });
   }
 
@@ -91,7 +76,6 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
       this.nuevaPersona = new Persona(); // Limpia los campos del formulario después de agregar
       this.cargarPersonas();
       this.rerender();
-
     }
   }
 
