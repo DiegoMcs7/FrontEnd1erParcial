@@ -1,7 +1,7 @@
 <div class="container">
   <h3 style="margin-bottom: 25px; margin-top: 10px">Administración de Personas</h3>
 
-  <!-- Formulario para agregar una nueva persona -->
+  <!-- Formulario de Agregar Persona -->
   <div class="form-group" id="form_agregar_persona">
     <input type="text" class="form-control" [(ngModel)]="nuevaPersona.nombre" placeholder="Nombre" style="width: 70%;"/>
     <input type="text" class="form-control" [(ngModel)]="nuevaPersona.apellido" placeholder="Apellido" style="width: 70%;"/>
@@ -15,10 +15,21 @@
     <button class="btn btn-primary mt-2 mb-4" (click)="agregarPersona()">Agregar Persona</button>
   </div>
 
+  <!-- Formulario de Editar Persona (se muestra solo en modo de edición) -->
+  <div class="form-group" *ngIf="editMode" id="form_editar_persona">
+    <input type="text" class="form-control" [(ngModel)]="personaEditada.nombre" placeholder="Nombre" style="width: 70%;"/>
+    <input type="text" class="form-control" [(ngModel)]="personaEditada.apellido" placeholder="Apellido" style="width: 70%;"/>
+    <input type="text" class="form-control" [(ngModel)]="personaEditada.telefono" placeholder="Teléfono" style="width: 70%;"/>
+    <input type="email" class="form-control" [(ngModel)]="personaEditada.email" placeholder="Email" style="width: 70%;"/>
+    <input type="text" class="form-control" [(ngModel)]="personaEditada.cedula" placeholder="Cédula" style="width: 70%;"/>
+    <button class="btn btn-success mt-2" (click)="guardarCambios()">Guardar Cambios</button>
+    <button class="btn btn-secondary mt-2" (click)="cancelarEdicion()">Cancelar</button>
+  </div>
 
   <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered">
     <thead>
       <tr>
+        <th>ID</th>
         <th>Nombre</th>
         <th>Apellido</th>
         <th>Teléfono</th>
@@ -30,6 +41,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let persona of personas">
+        <td>{{ persona.idPersona }}</td>
         <td>{{ persona.nombre }}</td>
         <td>{{ persona.apellido }}</td>
         <td>{{ persona.telefono }}</td>
@@ -38,10 +50,9 @@
         <td>{{ persona.flag_es_doctor }}</td>
         <td>
           <button class="btn btn-success" (click)="editarPersona(persona)">Editar</button>
-          <button class="btn btn-danger" (click)="eliminarPersona(persona.idPersona || 0)">Eliminar</button>
+          <button class="btn btn-danger" (click)="eliminarPersona(persona.idPersona)">Eliminar</button>
         </td>
       </tr>
     </tbody>
   </table>
-
 </div>

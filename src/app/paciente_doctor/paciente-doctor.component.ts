@@ -12,6 +12,8 @@ import { Subject } from 'rxjs';
 export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   nuevaPersona: Persona = new Persona(); // Inicializa nuevaPersona sin argumentos
   personas: Persona[] = [];
+  personaEditada: Persona = new Persona();
+  editMode = false; // Modo de edición
   constructor(private personaService: PersonaService) {}
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
@@ -24,20 +26,19 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
         language: {
           url:'//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
         },
-        searching: true, // Habilita la búsqueda
-        // Otras opciones de configuración si las tienes
+        searching: true,
         columns: [
-          { searchable: true }, // Columna 0 (nombre): Habilita la búsqueda
-          { searchable: true }, // Columna 1 (apellido): Habilita la búsqueda
-          { searchable: false }, // Columna 2 (teléfono): Habilita la búsqueda
-          { searchable: false }, // Columna 3 (email): Habilita la búsqueda
-          { searchable: false }, // Columna 4 (cedula): Habilita la búsqueda
-          { searchable: false }, // Columna 5 (Es doctor?): Habilita la búsqueda
-          { searchable: false }, // Columna 6 (Acciones): No es una columna ordenable
+          { searchable: false },
+          { searchable: true },
+          { searchable: true },
+          { searchable: false },
+          { searchable: false },
+          { searchable: false },
+          { searchable: false },
+          { searchable: false },
         ],
     }
     this.cargarPersonas();
-
   }
   ngAfterViewInit(): void {
     this.dtTrigger.next(null);
@@ -50,9 +51,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
 
   rerender(): void {
     this.dtElement?.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destruye la tabla primero
       dtInstance.destroy();
-      // Llama a dtTrigger para volver a renderizar
       this.dtTrigger.next(this.dtOptions);
     });
   }
@@ -60,8 +59,8 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   cargarPersonas(): void {
     this.personas = [];
     this.personaService.getPersonas().subscribe((personas: Persona[]) => {
-      this.personas = personas; // Asigna el resultado a la variable personas
-      this.rerender(); // Inicializa DataTables después de cargar los datos
+      this.personas = personas;
+      this.rerender();
     });
   }
 
@@ -74,7 +73,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
       this.nuevaPersona.cedula
     ) {
       this.personaService.agregarPersona(this.nuevaPersona);
-      this.nuevaPersona = new Persona(); // Limpia los campos del formulario después de agregar
+      this.nuevaPersona = new Persona();
       this.cargarPersonas();
       this.rerender();
     }
@@ -82,13 +81,29 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
 
   editarPersona(persona: Persona): void {
     if (persona.idPersona !== undefined) {
-      this.personaService.editarPersona(persona.idPersona, persona);
-      this.cargarPersonas();
+      this.editMode = true; // Cambia al modo de edición
+      this.personaEditada = { ...persona }; // Copia los datos de la persona a personaEditada
     }
   }
 
+  guardarCambios(): void {
+    // Lógica para guardar los cambios de la persona editada usando el servicio
+    this.personaService.editarPersona(this.personaEditada.idPersona.toString(), this.personaEditada);
+    this.editMode = false; // Vuelve al modo de agregar
+    this.personaEditada = new Persona();
+    this.cargarPersonas();
+  }
+
+  cancelarEdicion(): void {
+    // Cancela la edición y vuelve al modo de agregar
+    this.editMode = false;
+    this.personaEditada = new Persona();
+  }
+
   eliminarPersona(id: number): void {
-    this.personaService.eliminarPersona(id);
+    console.log(id);
+    const idComoString = id.toString();
+    this.personaService.eliminarPersona(idComoString);
     this.cargarPersonas();
   }
 }

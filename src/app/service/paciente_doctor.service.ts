@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 })
 export class PersonaService {
   private personas: Persona[] = [];
-  private nextId: number = 1;
 
   // constructor() {}
   constructor(private angularFirestore: AngularFirestore) {}
@@ -30,45 +29,59 @@ export class PersonaService {
       );
   }
 
-  // agregarPersona(nuevaPersona: Persona): void {
-  //   nuevaPersona.idPersona = this.nextId++;
-  //   this.personas.push(nuevaPersona);
-  // }
   agregarPersona(nuevaPersona: Persona) {
-    // Convierte la instancia de Persona en un objeto plano
-    const personaData = {
+    // Obtener las personas actuales
+    this.getPersonas().subscribe(personas => {
+      // Encontrar el ID más alto entre las personas existentes o establecerlo en 0 si no hay registros
+      const maxId = personas.length === 0 ? 0 : Math.max(...personas.map(persona => persona.idPersona));
+
+      // Asignar el próximo ID basado en el máximo encontrado
+      nuevaPersona.idPersona = maxId + 1;
+    });
+      // Convierte la instancia de Persona en un objeto plano
+      const personaData = {
+        idPersona: nuevaPersona.idPersona,
+        nombre: nuevaPersona.nombre,
+        apellido: nuevaPersona.apellido,
+        telefono: nuevaPersona.telefono,
+        email: nuevaPersona.email,
+        cedula: nuevaPersona.cedula,
+        flag_es_doctor: nuevaPersona.flag_es_doctor
+      };
+
+      // Agregar la nueva persona con el ID único
+      this.angularFirestore
+        .collection("persona-collection")
+        .add(personaData)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+  }
+
+  editarPersona(id: string, nuevaPersona: Persona) {
+    console.log(id);
+  return this.angularFirestore
+    .collection("persona-collection")
+    .doc(id)
+    .update({
       nombre: nuevaPersona.nombre,
       apellido: nuevaPersona.apellido,
       telefono: nuevaPersona.telefono,
       email: nuevaPersona.email,
-      cedula: nuevaPersona.cedula,
-      flag_es_doctor: nuevaPersona.flag_es_doctor
-    };
-console.log(personaData);
-    return new Promise<any>((resolve, reject) => {
-      this.angularFirestore
-        .collection("persona-collection")
-        .add(personaData) // Utiliza el objeto plano personaData
-        .then(response => {
-          console.log(response);
-          resolve(response); // Resuelve la promesa con la respuesta
-        })
-        .catch(error => {
-          console.error(error);
-          reject(error); // Rechaza la promesa si hay un error
-        });
+      cedula: nuevaPersona.cedula
     });
   }
 
-
-  editarPersona(id: number, nuevaPersona: Persona): void {
-    const personaIndex = this.personas.findIndex(p => p.idPersona === id);
-    if (personaIndex !== -1) {
-      this.personas[personaIndex] = nuevaPersona;
-    }
-  }
-
-  eliminarPersona(id: number): void {
-    this.personas = this.personas.filter(p => p.idPersona !== id);
+  eliminarPersona(id: string) {
+    console.log(id);
+    const idComoString = id.toString();
+    return this.angularFirestore
+    .collection("persona-collection")
+    .doc(idComoString)
+    .delete();
   }
 }
