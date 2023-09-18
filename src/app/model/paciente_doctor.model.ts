@@ -7,4 +7,5 @@ export class Persona {
   email!: string;
   cedula!: string;
   flag_es_doctor: boolean = true; // Establece el valor por defecto en true
+  editFieldName: boolean= false;
 }

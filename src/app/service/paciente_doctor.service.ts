@@ -62,19 +62,37 @@ export class PersonaService {
 
   }
 
-  editarPersona(id: string, nuevaPersona: Persona) {
-    console.log(id);
-  return this.angularFirestore
-    .collection("persona-collection")
-    .doc(id)
-    .update({
-      nombre: nuevaPersona.nombre,
-      apellido: nuevaPersona.apellido,
-      telefono: nuevaPersona.telefono,
-      email: nuevaPersona.email,
-      cedula: nuevaPersona.cedula
-    });
+  editarPersona(idPersona: number, nuevaPersona: Persona) {
+    return this.angularFirestore
+      .collection("persona-collection", ref => ref.where("idPersona", "==", idPersona))
+      .get()
+      .toPromise()
+      .then(querySnapshot => {
+        if (querySnapshot) {
+          // Si se encontró una persona con ese nombre, actualiza su información
+          const personaDoc = querySnapshot.docs[0];
+          if (personaDoc) {
+            return personaDoc.ref.update({
+              nombre: nuevaPersona.nombre,
+              apellido: nuevaPersona.apellido,
+              telefono: nuevaPersona.telefono,
+              email: nuevaPersona.email,
+              cedula: nuevaPersona.cedula
+            });
+          } else {
+            throw new Error("El documento de persona no está definido");
+          }
+        } else {
+          // Manejar el caso en el que no se encontró ninguna persona con ese nombre
+          throw new Error(`No se encontró ninguna persona con el nombre `);
+        }
+      })
+      .catch(error => {
+        console.error('Error al editar persona por nombre:', error);
+        // Manejar el error de edición aquí
+      });
   }
+  
 
   eliminarPersona(id: string) {
     console.log(id);

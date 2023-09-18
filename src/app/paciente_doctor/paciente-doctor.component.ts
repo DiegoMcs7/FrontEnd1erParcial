@@ -13,6 +13,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   nuevaPersona: Persona = new Persona(); // Inicializa nuevaPersona sin argumentos
   personas: Persona[] = [];
   personaEditada: Persona = new Persona();
+  edit_id: number = 0; // Campo edit_id como variable local
   editMode = false; // Modo de edición
   constructor(private personaService: PersonaService) {}
   @ViewChild(DataTableDirective, { static: false })
@@ -28,12 +29,11 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
         },
         searching: true,
         columns: [
-          { searchable: false },
           { searchable: true },
           { searchable: true },
-          { searchable: false },
-          { searchable: false },
-          { searchable: false },
+          { searchable: true },
+          { searchable: true },
+          { searchable: true },
           { searchable: false },
           { searchable: false },
         ],
@@ -80,19 +80,30 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   editarPersona(persona: Persona): void {
-    if (persona.idPersona !== undefined) {
-      this.editMode = true; // Cambia al modo de edición
-      this.personaEditada = { ...persona }; // Copia los datos de la persona a personaEditada
-    }
-  }
+    this.edit_id = persona.idPersona;
+    persona.editFieldName=true;
+    this.rerender();
 
-  guardarCambios(): void {
-    // Lógica para guardar los cambios de la persona editada usando el servicio
-    this.personaService.editarPersona(this.personaEditada.idPersona.toString(), this.personaEditada);
-    this.editMode = false; // Vuelve al modo de agregar
-    this.personaEditada = new Persona();
-    this.cargarPersonas();
   }
+  guardarEdicionCambios(persona: Persona): void {
+    this.personaService.editarPersona(this.edit_id, persona);
+    persona.editFieldName=true;
+    this.rerender();
+  }
+  // editarPersona(persona: Persona): void {
+  //   if (persona.idPersona !== undefined) {
+  //     this.editMode = true; // Cambia al modo de edición
+  //     this.personaEditada = { ...persona }; // Copia los datos de la persona a personaEditada
+  //   }
+  // }
+
+  // guardarCambios(): void {
+  //   // Lógica para guardar los cambios de la persona editada usando el servicio
+  //   this.personaService.editarPersona(this.personaEditada.idPersona.toString(), this.personaEditada);
+  //   this.editMode = false; // Vuelve al modo de agregar
+  //   this.personaEditada = new Persona();
+  //   this.cargarPersonas();
+  // }
 
   cancelarEdicion(): void {
     // Cancela la edición y vuelve al modo de agregar

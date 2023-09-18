@@ -16,7 +16,7 @@
   </div>
 
   <!-- Formulario de Editar Persona (se muestra solo en modo de edición) -->
-  <div class="form-group" *ngIf="editMode" id="form_editar_persona">
+  <!-- <div class="form-group" *ngIf="editMode" id="form_editar_persona">
     <input type="text" class="form-control" [(ngModel)]="personaEditada.nombre" placeholder="Nombre" style="width: 70%;"/>
     <input type="text" class="form-control" [(ngModel)]="personaEditada.apellido" placeholder="Apellido" style="width: 70%;"/>
     <input type="text" class="form-control" [(ngModel)]="personaEditada.telefono" placeholder="Teléfono" style="width: 70%;"/>
@@ -24,12 +24,11 @@
     <input type="text" class="form-control" [(ngModel)]="personaEditada.cedula" placeholder="Cédula" style="width: 70%;"/>
     <button class="btn btn-success mt-2" (click)="guardarCambios()">Guardar Cambios</button>
     <button class="btn btn-secondary mt-2" (click)="cancelarEdicion()">Cancelar</button>
-  </div>
+  </div> -->
 
   <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Nombre</th>
         <th>Apellido</th>
         <th>Teléfono</th>
@@ -41,17 +40,33 @@
     </thead>
     <tbody>
       <tr *ngFor="let persona of personas">
-        <td>{{ persona.idPersona }}</td>
-        <td>{{ persona.nombre }}</td>
-        <td>{{ persona.apellido }}</td>
-        <td>{{ persona.telefono }}</td>
-        <td>{{ persona.email }}</td>
-        <td>{{ persona.cedula }}</td>
-        <td>{{ persona.flag_es_doctor }}</td>
-        <td>
+        <td *ngIf="!persona.editFieldName">{{ persona.nombre }}</td>
+        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.nombre" /> </td>
+
+        <td *ngIf="!persona.editFieldName">{{ persona.apellido }}</td>
+        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.apellido" /> </td>
+
+        <td *ngIf="!persona.editFieldName">{{ persona.telefono }}</td>
+        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.telefono" /> </td>
+
+        <td *ngIf="!persona.editFieldName">{{ persona.email }}</td>
+        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.email" /> </td>
+
+        <td *ngIf="!persona.editFieldName">{{ persona.cedula }}</td>
+        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.cedula" /> </td>
+
+        <td *ngIf="!persona.editFieldName">{{ persona.flag_es_doctor }}</td>
+        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.flag_es_doctor" /> </td>
+
+
+        <td *ngIf="!persona.editFieldName">
           <button class="btn btn-success" (click)="editarPersona(persona)">Editar</button>
           <button class="btn btn-danger" (click)="eliminarPersona(persona.idPersona)">Eliminar</button>
         </td>
+        <td *ngIf="persona.editFieldName">
+          <button class="btn btn-success mt-2" (click)="guardarEdicionCambios(persona)">Guardar Cambios</button>
+        </td>
+
       </tr>
     </tbody>
   </table>
