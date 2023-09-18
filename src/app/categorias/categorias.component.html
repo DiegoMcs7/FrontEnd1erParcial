@@ -8,21 +8,28 @@
     <button class="btn btn-primary mt-2 mb-4" (click)="agregarCategoria()">Agregar Categoria</button>
   </div>
 
-  <!-- Lista de personas -->
-  <table class="table table-striped">
+  <!-- Lista de categorias -->
+  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered">
     <thead>
       <tr>
-        <th>Descripcion</th>
+        <th>Descripción</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let categoria of categorias ">
-        <td>{{ categoria.descripcion }}</td>
-        <td>
-          <button class="btn btn-success" (click)="editarCategoria(categoria.idCategoria,categoria.descripcion)">Editar</button>
+      <tr *ngFor="let categoria of categorias">
+        <td *ngIf="!categoria.editFieldName">{{ categoria.descripcion }}</td>
+        <td *ngIf="categoria.editFieldName"><input type="text" [(ngModel)]="categoria.descripcion" /> </td>
+
+        <td *ngIf="!categoria.editFieldName">
+          <button class="btn btn-success" (click)="editarCategoria(categoria)">Editar</button>
           <button class="btn btn-danger" (click)="eliminarCategoria(categoria.idCategoria)">Eliminar</button>
         </td>
+        <td *ngIf="categoria.editFieldName">
+          <button class="btn btn-success mt-2" (click)="guardarEdicionCambios(categoria)">Guardar Cambios</button>
+          <button class="btn btn-success mt-2" (click)="cancelarEdicion()">Cancelar</button>
+        </td>
+
       </tr>
     </tbody>
   </table>

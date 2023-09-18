@@ -26,7 +26,15 @@ export class CategoriaService {
   }
 
   agregarCategoria(nuevaCategoria: Categoria) {
+    this.getCategorias().subscribe(categorias => {
+      // Encontrar el ID más alto entre las personas existentes o establecerlo en 0 si no hay registros
+      const maxId = categorias.length === 0 ? 0 : Math.max(...categorias.map(categoria => categoria.idCategoria));
+
+      // Asignar el próximo ID basado en el máximo encontrado
+      nuevaCategoria.idCategoria = maxId + 1;
+    });
     const categoriaData = {
+      idCategoria: nuevaCategoria.idCategoria,
       descripcion: nuevaCategoria.descripcion
     };
     return this.angularFirestore
@@ -34,11 +42,31 @@ export class CategoriaService {
     .add(categoriaData);
   }
 
-  editarCategoria(id: string, nuevaDescripcion: string){
+  editarCategoria(idCategoria: number, nuevaCategoria: Categoria) {
     return this.angularFirestore
-      .collection('categoria-collection')
-      .doc(id)
-      .update({ descripcion: nuevaDescripcion });
+      .collection("categoria-collection", ref => ref.where("idCategoria", "==", idCategoria))
+      .get()
+      .toPromise()
+      .then(querySnapshot => {
+        if (querySnapshot) {
+          // Si se encontró una categoria con ese nombre, actualiza su información
+          const categoriaDoc = querySnapshot.docs[0];
+          if (categoriaDoc) {
+            return categoriaDoc.ref.update({
+              descripcion: nuevaCategoria.descripcion,
+            });
+          } else {
+            throw new Error("El documento de categoria no está definido");
+          }
+        } else {
+          // Manejar el caso en el que no se encontró ninguna categoria con ese nombre
+          throw new Error(`No se encontró ninguna categoria con el nombre `);
+        }
+      })
+      .catch(error => {
+        console.error('Error al editar categoria por nombre:', error);
+        // Manejar el error de edición aquí
+      });
   }
 
   eliminarCategoria(id: string){
