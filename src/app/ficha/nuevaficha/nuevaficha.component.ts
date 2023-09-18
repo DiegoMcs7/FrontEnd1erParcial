@@ -4,7 +4,8 @@ import { Ficha } from 'src/app/model/fichas';
 import { Persona } from 'src/app/model/paciente_doctor.model';
 import { CategoriaService } from 'src/app/service/categoria.service';
 import { ServicefichaService } from '../../service/serviceficha.service';
-
+import { PersonaService } from '../../service/paciente_doctor.service'
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-nuevaficha',
   templateUrl: './nuevaficha.component.html',
@@ -17,12 +18,22 @@ export class NuevafichaComponent implements OnInit {
   paciente: Persona = new Persona();
   categorias: Categoria[] = []
   categoria: Categoria = new Categoria()
-  constructor(private serviceCategoria: CategoriaService, private serviceFicha: ServicefichaService) { }
+  personas: Persona[] = [];
+  personaSeleccionada1: number | undefined;
+  personaSeleccionada2: number | undefined;
+  constructor(private categoriaService: CategoriaService, private serviceFicha: ServicefichaService, private personaService: PersonaService) { }
 
   ngOnInit(): void {
     this.getCategorias()
+    this.cargarPersonas();
   }
 
+  cargarPersonas(): void {
+    this.personaService.getPersonas().subscribe((data: Persona[]) => {
+      this.personas = data;
+    });
+
+  }
   seleccionarDoctor(doctor: Persona){
     this.doctor = doctor
     this.doctor.fullName = doctor.nombre + " " + doctor.apellido;
@@ -33,9 +44,9 @@ export class NuevafichaComponent implements OnInit {
     this.paciente.fullName = paciente.nombre + " " + paciente.apellido;
   }
   getCategorias(){
-    this.serviceCategoria.getCategorias().subscribe((data:any)=>{
-      this.categorias = data.lista;
-    })
+    this.categoriaService.getCategorias().subscribe((data: Categoria[]) => {
+      this.categorias = data;
+    });
   }
 
   guardarFicha(){

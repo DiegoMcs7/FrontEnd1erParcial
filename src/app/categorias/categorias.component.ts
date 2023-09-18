@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Categoria } from '../model/categoria.model';
 import { CategoriaService } from '../service/categoria.service';
-import { Observable } from 'rxjs';
-
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.component.html',
   styleUrls: ['./categorias.component.css'],
 })
 export class CategoriasComponent implements OnInit {
-  nuevaCategoria: string = '';
-  categorias$!: Observable<Categoria[]>; // Utilizamos el tipo Observable aquí
+  nuevaCategoria: Categoria = new Categoria();
+  categorias: Categoria[] = [];
 
   constructor(private categoriaService: CategoriaService) {}
 
@@ -18,29 +16,33 @@ export class CategoriasComponent implements OnInit {
     this.cargarCategorias();
   }
 
-  getCategorias() {
-    this.categorias$ = this.categoriaService.getCategorias();
+  cargarCategorias(): void {
+    this.categorias = [];
+    this.categoriaService.getCategorias().subscribe((categorias: Categoria[]) => {
+      this.categorias = categorias;
+    });
   }
 
   agregarCategoria(): void {
-    if (this.nuevaCategoria.trim() !== '') {
+    if (
+      this.nuevaCategoria.descripcion
+    ) {
       this.categoriaService.agregarCategoria(this.nuevaCategoria);
-      this.nuevaCategoria = '';
-      this.cargarCategorias();
+      this.nuevaCategoria = new Categoria(); // Limpia el input
+      this.cargarCategorias(); // Recarga la lista de categorías
     }
   }
 
   editarCategoria(id: number, nuevaDescripcion: string): void {
-    this.categoriaService.editarCategoria(id, nuevaDescripcion);
+    const idComoString = id.toString();
+    this.categoriaService.editarCategoria(idComoString, nuevaDescripcion);
     this.cargarCategorias();
   }
 
   eliminarCategoria(id: number): void {
-    this.categoriaService.eliminarCategoria(id);
+    const idComoString = id.toString();
+    this.categoriaService.eliminarCategoria(idComoString);
     this.cargarCategorias();
   }
 
-  cargarCategorias() {
-    this.getCategorias();
-  }
 }

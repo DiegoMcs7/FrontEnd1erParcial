@@ -11,7 +11,7 @@
                   <label for="doctor">Doctor</label>
                   <div class="input-group">
                     <select class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor.idPersona">
-                      <option selected disabled="true">--Please Select --</option>
+                      <option selected disabled="true">Selecciona un Doctor</option>
                       <ng-container *ngFor="let persona of personas">
                           <option [value]="persona.idPersona" *ngIf="persona.flag_es_doctor">
                             {{ persona.nombre }} {{ persona.apellido }}
@@ -37,7 +37,7 @@
                   <label for="paciente">Paciente</label>
                   <div class="input-group">
                     <select class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente.idPersona">
-                      <option selected disabled="true">--Please Select --</option>
+                      <option selected disabled="true">Selecciona un Paciente</option>
                       <ng-container *ngFor="let persona of personas">
                           <option [value]="persona.idPersona" *ngIf="!persona.flag_es_doctor">
                             {{ persona.nombre }} {{ persona.apellido }}
@@ -62,7 +62,7 @@
       </form>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" routerLink="/reservas">Volver</button>
           <button type="button" class="btn btn-primary" (click)="crearReserva()">Guardar</button>
       </div>
       <div class="table-responsive">

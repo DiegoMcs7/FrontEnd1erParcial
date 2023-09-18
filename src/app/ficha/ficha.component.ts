@@ -4,6 +4,7 @@ import { Ficha } from '../model/fichas';
 import { Persona } from '../model/paciente_doctor.model';
 import { CategoriaService } from "../service/categoria.service";
 import { ServicefichaService } from '../service/serviceficha.service';
+import { PersonaService } from '../service/paciente_doctor.service'
 
 type Filtro = {
   fechaDesde ?: string,
@@ -35,10 +36,20 @@ export class FichaComponent implements OnInit {
   paciente : Persona = new Persona()
   categoria: Categoria = new Categoria()
   filtros: Filtro = {};
-  constructor(private servicioFicha: ServicefichaService,private serviceCategoria: CategoriaService) { }
+  personas: Persona[] = [];
+  personaSeleccionada1: number | undefined;
+  personaSeleccionada2: number | undefined;
+  constructor(private servicioFicha: ServicefichaService,private serviceCategoria: CategoriaService, private personaService: PersonaService) { }
 
   ngOnInit(){
     this.getCategorias()
+    this.cargarPersonas();
+  }
+
+  cargarPersonas(): void {
+    this.personaService.getPersonas().subscribe((data: Persona[]) => {
+      this.personas = data;
+    });
   }
   getFichas(){
     let currentPage = this.config.currentPage;

@@ -1,35 +1,51 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Categoria } from '../model/categoria.model';
-import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoriaService {
-  private categorias: Categoria[] = [];
-  private nextId: number = 1;
-
-  constructor() { }
+  constructor(private angularFirestore: AngularFirestore) {}
 
   getCategorias(): Observable<Categoria[]> {
-    return of(this.categorias); // Devolvemos un Observable de las categorías actuales
+    return this.angularFirestore
+      .collection<Categoria>('categoria-collection')
+      .snapshotChanges()
+      .pipe(
+        map(actions => {
+          return actions.map(action => {
+            const data = action.payload.doc.data() as Categoria;
+            const id = action.payload.doc.id;
+            return { id, ...data };
+          });
+        })
+      );
   }
 
-  agregarCategoria(nuevaCategoria: string): void {
-    const nuevaCategoriaObj = new Categoria();
-    nuevaCategoriaObj.idCategoria = this.nextId++;
-    nuevaCategoriaObj.descripcion = nuevaCategoria;
-    this.categorias.push(nuevaCategoriaObj);
+  agregarCategoria(nuevaCategoria: Categoria) {
+    const categoriaData = {
+      descripcion: nuevaCategoria.descripcion
+    };
+    return this.angularFirestore
+    .collection('categoria-collection')
+    .add(categoriaData);
   }
 
-  editarCategoria(id: number, nuevaDescripcion: string): void {
-    const categoria = this.categorias.find((c) => c.idCategoria === id);
-    if (categoria) {
-      categoria.descripcion = nuevaDescripcion;
-    }
+  editarCategoria(id: string, nuevaDescripcion: string){
+    return this.angularFirestore
+      .collection('categoria-collection')
+      .doc(id)
+      .update({ descripcion: nuevaDescripcion });
   }
 
-  eliminarCategoria(id: number): void {
-    this.categorias = this.categorias.filter((c) => c.idCategoria !== id);
+  eliminarCategoria(id: string){
+    return this.angularFirestore
+      .collection('categoria-collection')
+      .doc(id)
+      .delete();
   }
+
 }
