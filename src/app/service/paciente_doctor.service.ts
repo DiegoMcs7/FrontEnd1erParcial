@@ -44,7 +44,7 @@ export class PersonaService {
       cedula: nuevaPersona.cedula,
       flag_es_doctor: nuevaPersona.flag_es_doctor
     };
-
+console.log(personaData);
     return new Promise<any>((resolve, reject) => {
       this.angularFirestore
         .collection("persona-collection")

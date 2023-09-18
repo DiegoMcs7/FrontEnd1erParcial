@@ -19,7 +19,6 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   dtTrigger: Subject<any> = new Subject<any>();
 
   ngOnInit(): void {
-    this.cargarPersonas();
     this.dtOptions = {
         pagingType: 'full_numbers',
         language: {
@@ -37,7 +36,8 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
           { searchable: false }, // Columna 6 (Acciones): No es una columna ordenable
         ],
     }
-    
+    this.cargarPersonas();
+
   }
   ngAfterViewInit(): void {
     this.dtTrigger.next(null);
@@ -58,6 +58,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   cargarPersonas(): void {
+    this.personas = [];
     this.personaService.getPersonas().subscribe((personas: Persona[]) => {
       this.personas = personas; // Asigna el resultado a la variable personas
       this.rerender(); // Inicializa DataTables después de cargar los datos
