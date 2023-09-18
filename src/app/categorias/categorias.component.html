@@ -23,7 +23,7 @@
 
         <td *ngIf="!categoria.editFieldName">
           <button class="btn btn-success" (click)="editarCategoria(categoria)">Editar</button>
-          <button class="btn btn-danger" (click)="eliminarCategoria(categoria.idCategoria)">Eliminar</button>
+          <button class="btn btn-danger" (click)="eliminarCategoria(categoria)">Eliminar</button>
         </td>
         <td *ngIf="categoria.editFieldName">
           <button class="btn btn-success mt-2" (click)="guardarEdicionCambios(categoria)">Guardar Cambios</button>

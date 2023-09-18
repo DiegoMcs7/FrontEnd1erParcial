@@ -97,7 +97,6 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
     this.personaEditada = new Persona();
   }
 
-  
   eliminarPersona(persona: Persona): void {
     this.personaService.eliminarPersona(persona.idPersona);
     this.rerender();

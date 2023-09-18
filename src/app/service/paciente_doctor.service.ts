@@ -92,7 +92,7 @@ export class PersonaService {
         // Manejar el error de edición aquí
       });
   }
-  
+
   async eliminarPersona(idPersona: number): Promise<void> {
     try {
       console.log("elimina");
@@ -117,6 +117,5 @@ export class PersonaService {
       // Manejar el error de eliminación aquí
     }
   }
-  
-  
+
 }

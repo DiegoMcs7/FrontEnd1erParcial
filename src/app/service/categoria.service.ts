@@ -69,11 +69,29 @@ export class CategoriaService {
       });
   }
 
-  eliminarCategoria(id: string){
-    return this.angularFirestore
-      .collection('categoria-collection')
-      .doc(id)
-      .delete();
+  async eliminarCategoria(idCategoria: number): Promise<void> {
+    try {
+      console.log("elimina");
+      // Realiza la búsqueda del documento con el idCategoria
+      const querySnapshot = await this.angularFirestore
+        .collection("categoria-collection", ref => ref.where("idCategoria", "==", idCategoria))
+        .get()
+        .toPromise();
+        // Verifica si se encontró alguna coincidencia
+      if (querySnapshot) {
+        // Itera sobre los documentos encontrados (en este caso, debería ser solo uno)
+        querySnapshot.forEach(doc => {
+          // Elimina el documento
+          doc.ref.delete();
+        });
+      } else {
+        // Manejar el caso en el que no se encontró ninguna persona con ese idCategoria
+        throw new Error(`No se encontró ninguna persona con el id ${idCategoria}`);
+      }
+    } catch (error) {
+      console.error('Error al eliminar persona por idCategoria:', error);
+      // Manejar el error de eliminación aquí
+    }
   }
 
 }

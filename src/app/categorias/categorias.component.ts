@@ -90,10 +90,9 @@ export class CategoriasComponent implements OnInit {
     this.categoriaEditada = new Categoria();
   }
 
-  eliminarCategoria(id: number): void {
-    const idComoString = id.toString();
-    this.categoriaService.eliminarCategoria(idComoString);
-    this.cargarCategorias();
+  eliminarCategoria(categoria: Categoria): void {
+    this.categoriaService.eliminarCategoria(categoria.idCategoria);
+    this.rerender();
   }
 
 }
