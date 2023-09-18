@@ -90,20 +90,6 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
     persona.editFieldName=true;
     this.rerender();
   }
-  // editarPersona(persona: Persona): void {
-  //   if (persona.idPersona !== undefined) {
-  //     this.editMode = true; // Cambia al modo de edición
-  //     this.personaEditada = { ...persona }; // Copia los datos de la persona a personaEditada
-  //   }
-  // }
-
-  // guardarCambios(): void {
-  //   // Lógica para guardar los cambios de la persona editada usando el servicio
-  //   this.personaService.editarPersona(this.personaEditada.idPersona.toString(), this.personaEditada);
-  //   this.editMode = false; // Vuelve al modo de agregar
-  //   this.personaEditada = new Persona();
-  //   this.cargarPersonas();
-  // }
 
   cancelarEdicion(): void {
     // Cancela la edición y vuelve al modo de agregar
