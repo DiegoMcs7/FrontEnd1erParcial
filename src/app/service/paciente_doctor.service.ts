@@ -95,13 +95,13 @@ export class PersonaService {
   
   async eliminarPersona(idPersona: number): Promise<void> {
     try {
+      console.log("elimina");
       // Realiza la búsqueda del documento con el idPersona
       const querySnapshot = await this.angularFirestore
         .collection("persona-collection", ref => ref.where("idPersona", "==", idPersona))
         .get()
         .toPromise();
-  
-      // Verifica si se encontró alguna coincidencia
+        // Verifica si se encontró alguna coincidencia
       if (querySnapshot) {
         // Itera sobre los documentos encontrados (en este caso, debería ser solo uno)
         querySnapshot.forEach(doc => {
