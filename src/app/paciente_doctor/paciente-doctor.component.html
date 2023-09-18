@@ -41,30 +41,30 @@
     <tbody>
       <tr *ngFor="let persona of personas">
         <td *ngIf="!persona.editFieldName">{{ persona.nombre }}</td>
-        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.nombre" /> </td>
+        <td *ngIf="persona.editFieldName"><input style="width: 100%;" type="text" [(ngModel)]="persona.nombre" /> </td>
 
         <td *ngIf="!persona.editFieldName">{{ persona.apellido }}</td>
-        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.apellido" /> </td>
+        <td *ngIf="persona.editFieldName"><input style="width: 100%;" type="text" [(ngModel)]="persona.apellido" /> </td>
 
         <td *ngIf="!persona.editFieldName">{{ persona.telefono }}</td>
-        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.telefono" /> </td>
+        <td *ngIf="persona.editFieldName"><input style="width: 100%;" type="text" [(ngModel)]="persona.telefono" /> </td>
 
         <td *ngIf="!persona.editFieldName">{{ persona.email }}</td>
-        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.email" /> </td>
+        <td *ngIf="persona.editFieldName"><input  style="width: 100%;"type="text" [(ngModel)]="persona.email" /> </td>
 
         <td *ngIf="!persona.editFieldName">{{ persona.cedula }}</td>
-        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.cedula" /> </td>
+        <td *ngIf="persona.editFieldName"><input style="width: 100%;" type="text" [(ngModel)]="persona.cedula" /> </td>
 
         <td *ngIf="!persona.editFieldName">{{ persona.flag_es_doctor }}</td>
-        <td *ngIf="persona.editFieldName"><input type="text" [(ngModel)]="persona.flag_es_doctor" /> </td>
+        <td *ngIf="persona.editFieldName"><input style="width: 100%;" type="text" [(ngModel)]="persona.flag_es_doctor" /> </td>
 
 
         <td *ngIf="!persona.editFieldName">
           <button class="btn btn-success" (click)="editarPersona(persona)">Editar</button>
-          <button class="btn btn-danger" (click)="eliminarPersona(persona.idPersona)">Eliminar</button>
+          <button class="btn btn-danger" (click)="eliminarPersona(persona)">Eliminar</button>
         </td>
         <td *ngIf="persona.editFieldName">
-          <button class="btn btn-success mt-2" (click)="guardarEdicionCambios(persona)">Guardar Cambios</button>
+          <button style="width: 100%;" class="btn btn-success mt-2" (click)="guardarEdicionCambios(persona)">Guardar Cambios</button>
         </td>
 
       </tr>

@@ -69,7 +69,7 @@ export class PersonaService {
       .toPromise()
       .then(querySnapshot => {
         if (querySnapshot) {
-          // Si se encontró una persona con ese nombre, actualiza su información
+          // Si se encontró una persona con ese id, actualiza su información
           const personaDoc = querySnapshot.docs[0];
           if (personaDoc) {
             return personaDoc.ref.update({
@@ -93,13 +93,30 @@ export class PersonaService {
       });
   }
   
-
-  eliminarPersona(id: string) {
-    console.log(id);
-    const idComoString = id.toString();
-    return this.angularFirestore
-    .collection("persona-collection")
-    .doc(idComoString)
-    .delete();
+  async eliminarPersona(idPersona: number): Promise<void> {
+    try {
+      // Realiza la búsqueda del documento con el idPersona
+      const querySnapshot = await this.angularFirestore
+        .collection("persona-collection", ref => ref.where("idPersona", "==", idPersona))
+        .get()
+        .toPromise();
+  
+      // Verifica si se encontró alguna coincidencia
+      if (querySnapshot) {
+        // Itera sobre los documentos encontrados (en este caso, debería ser solo uno)
+        querySnapshot.forEach(doc => {
+          // Elimina el documento
+          doc.ref.delete();
+        });
+      } else {
+        // Manejar el caso en el que no se encontró ninguna persona con ese idPersona
+        throw new Error(`No se encontró ninguna persona con el id ${idPersona}`);
+      }
+    } catch (error) {
+      console.error('Error al eliminar persona por idPersona:', error);
+      // Manejar el error de eliminación aquí
+    }
   }
+  
+  
 }

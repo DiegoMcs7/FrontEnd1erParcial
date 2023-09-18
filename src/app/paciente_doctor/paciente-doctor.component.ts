@@ -83,8 +83,8 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
     this.edit_id = persona.idPersona;
     persona.editFieldName=true;
     this.rerender();
-
   }
+
   guardarEdicionCambios(persona: Persona): void {
     this.personaService.editarPersona(this.edit_id, persona);
     persona.editFieldName=true;
@@ -97,10 +97,10 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
     this.personaEditada = new Persona();
   }
 
-  eliminarPersona(id: number): void {
-    console.log(id);
-    const idComoString = id.toString();
-    this.personaService.eliminarPersona(idComoString);
-    this.cargarPersonas();
+  
+  eliminarPersona(persona: Persona): void {
+    this.personaService.eliminarPersona(persona.idPersona);
+    this.rerender();
   }
+
 }
