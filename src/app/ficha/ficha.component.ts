@@ -6,7 +6,8 @@ import { CategoriaService } from "../service/categoria.service";
 import { ServicefichaService } from '../service/serviceficha.service';
 import { PersonaService } from '../service/paciente_doctor.service';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas'
+import html2canvas from 'html2canvas';
+import * as XLSX from 'xlsx'
 
 type Filtro = {
   fechaDesde ?: string,
@@ -113,8 +114,19 @@ export class FichaComponent implements OnInit {
       doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
       return doc;
     }).then((docResult) => {
-      docResult.save(`${new Date().toISOString()}_tutorial.pdf`);
+      docResult.save(`${new Date().toISOString()}_ficha.pdf`);
     });
+  }
+
+  name = 'ficha.xlsx';
+  exportToExcel(): void {
+    let element = document.getElementById('htmlData');
+    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
+    const book: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
+
+    XLSX.writeFile(book, this.name);
   }
 
 }
