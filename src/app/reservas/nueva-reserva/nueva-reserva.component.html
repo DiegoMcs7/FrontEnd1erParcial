@@ -73,11 +73,11 @@
                   </tr>
               </thead>
               <tbody>
-                  <tr *ngFor="let group of data">
+                  <tr *ngFor="let group of reservas">
                   <td>{{group.fecha}}</td>
                   <td>{{group.horaInicio}}</td>
                   <td>{{group.horaFin}}</td>
-                  <td>{{group.idDoctor.nombre + " " + group.idDoctor.apellido }}</td>
+                  <td>{{personas[group.idDoctor.idPersona].nombre + " " + personas[group.idDoctor.idPersona].apellido }}</td>
                   <td>{{group.idPaciente.nombre + " " + group.idPaciente.apellido }}</td>
                   <td>
                   </td>

@@ -9,6 +9,5 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = '1erpfront';
   constructor(public router: Router){
-
   }
 }

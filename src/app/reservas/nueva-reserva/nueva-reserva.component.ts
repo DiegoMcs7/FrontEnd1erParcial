@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Persona } from 'src/app/model/paciente_doctor.model';
+import { Persona } from '../../model/paciente_doctor.model';
 import { PersonaService } from '../../service/paciente_doctor.service'
-import { Reserva, ReservaPostBody } from 'src/app/model/reserva.model';
-import { ReservaService } from 'src/app/service/reserva.service';
+import { Reserva, ReservaPostBody } from '../../model/reserva.model';
+import { ReservaService } from '../../service/reserva.service';
 
 class Hora {
   hora!: number;
@@ -41,6 +41,7 @@ export class NuevaReservaComponent implements OnInit {
   nuevaPersona: Persona = new Persona();
   fecha: Fecha = new Fecha();
 
+
   constructor(private reservaService: ReservaService, private personaService: PersonaService) { }
 
   ngOnInit(): void {
@@ -63,7 +64,6 @@ export class NuevaReservaComponent implements OnInit {
   }
 
   cargarReservas(): void {
-    this.reservas = [];
     this.reservaService.getReservas().subscribe((reservas: Reserva[]) => {
       this.reservas = reservas;
     });
@@ -71,11 +71,13 @@ export class NuevaReservaComponent implements OnInit {
 
   agregarReserva(): void {
     this.nuevaReserva.fecha = this.getDateString();
+    this.nuevaReserva.idDoctor = this.doctor;
+    this.nuevaReserva.idPaciente = this.paciente;
     this.nuevaReserva.horaInicio = this.cambioInicio(); // Llama a la función para obtener la hora de inicio
     this.nuevaReserva.horaFin = this.cambioFin(); // Llama a la función para obtener la hora de fin
 
     if (this.nuevaReserva.idDoctor && this.nuevaReserva.idPaciente) {
-      this.reservaService.agregarReserva(this.nuevaReserva, this.nuevaPersona)
+      this.reservaService.agregarReserva(this.nuevaReserva)
         console.log('Reserva agregada con éxito.');
         this.nuevaReserva = new Reserva();
         this.cargarReservas();

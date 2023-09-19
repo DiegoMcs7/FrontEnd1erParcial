@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ServicefichaService } from '../../service/serviceficha.service';
-import { Ficha } from 'src/app/model/fichas';
+import { Ficha } from '../../model/fichas';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

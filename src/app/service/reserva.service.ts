@@ -30,19 +30,20 @@ export class ReservaService {
       );
   }
 
-  agregarReserva(nuevaReserva: Reserva, nuevaPersona: Persona) {
-    return this.getReservas().subscribe((reservas: Reserva[]) => {
+  agregarReserva(nuevaReserva: Reserva) {
+    this.getReservas().subscribe((reservas: Reserva[]) => {
       const maxId = reservas.length === 0 ? 0 : Math.max(...reservas.map(reserva => reserva.idReserva));
       nuevaReserva.idReserva = maxId + 1;
-
+    });
       const reservaData = {
         idReserva: nuevaReserva.idReserva,
-        idDoctor: nuevaPersona.flag_es_doctor ? nuevaReserva.idDoctor : null,
-        idPaciente: nuevaPersona.flag_es_doctor ? null : nuevaReserva.idPaciente,
+        idDoctor: nuevaReserva.idDoctor.idPersona,
+        idPaciente: nuevaReserva.idPaciente.idPersona,
         fecha: nuevaReserva.fecha,
         horaInicio: nuevaReserva.horaInicio,
         horaFin: nuevaReserva.horaFin,
       };
+
 
       // Agregar la nueva reserva con el ID único a Firestore
       this.angularFirestore
@@ -54,7 +55,7 @@ export class ReservaService {
         .catch(error => {
           console.error('Error al agregar la reserva:', error);
         });
-    });
+
   }
 
   cancelarReserva(idReserva: string) {

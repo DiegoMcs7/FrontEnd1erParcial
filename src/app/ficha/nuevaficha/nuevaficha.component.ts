@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Categoria } from 'src/app/model/categoria.model';
-import { Ficha } from 'src/app/model/fichas';
-import { Persona } from 'src/app/model/paciente_doctor.model';
-import { CategoriaService } from 'src/app/service/categoria.service';
+import { Categoria } from '../../model/categoria.model';
+import { Ficha } from '../../model/fichas';
+import { Persona } from '../../model/paciente_doctor.model';
+import { CategoriaService } from '../../service/categoria.service';
 import { ServicefichaService } from '../../service/serviceficha.service';
 import { PersonaService } from '../../service/paciente_doctor.service'
 import { Observable } from 'rxjs';
