@@ -39,6 +39,7 @@ export class NuevaReservaComponent implements OnInit {
   horaFin: Hora = new Hora();
   nuevaPersona: Persona = new Persona();
   fecha: Fecha = new Fecha();
+  max_id: number = 0;
 
 
   constructor(private reservaService: ReservaService, private personaService: PersonaService) { }
@@ -49,7 +50,7 @@ export class NuevaReservaComponent implements OnInit {
   }
 
   getDateString() {
-    return `${this.fecha.year}${this.fecha.month <= 9 ? '0' : ''}${this.fecha.month}${this.fecha.day <= 9 ? '0' : ''}${this.fecha.day}`;
+    return `${this.fecha.year}/${this.fecha.month <= 9 ? '0' : ''}${this.fecha.month}/${this.fecha.day <= 9 ? '0' : ''}${this.fecha.day}`;
   }
 
   onDateChange() {
@@ -65,8 +66,9 @@ export class NuevaReservaComponent implements OnInit {
   cargarReservas(): void {
     this.reservaService.getReservas().subscribe((reservas: Reserva[]) => {
       this.reservas = reservas;
-      this.cargarPersonas();
+      this.max_id= this.max_id + this.reservas.length;
     });
+
   }
 
   get Persona(): string {
@@ -76,6 +78,8 @@ export class NuevaReservaComponent implements OnInit {
   }
 
   agregarReserva(): void {
+    this.max_id= this.max_id + 1;
+    this.nuevaReserva.idReserva = this.max_id;
     this.nuevaReserva.fecha = this.getDateString();
     this.nuevaReserva.idDoctor = this.doctor;
     this.nuevaReserva.idPaciente = this.paciente;
@@ -94,12 +98,12 @@ export class NuevaReservaComponent implements OnInit {
 
   cambioFin(): string {
     this.horaInicio.hora = this.horaFin.hora - 1;
-    return `${this.horaInicio.hora <= 9 ? '0' : ''}${this.horaInicio.hora}${this.horaInicio.minuto <= 9 ? '0' : ''}${this.horaInicio.minuto}`;
+    return `${this.horaFin.hora <= 9 ? '0' : ''}${this.horaFin.hora}:0${this.horaFin.minuto}`;
   }
 
   cambioInicio(): string {
     this.horaFin.hora = this.horaInicio.hora + 1;
-    return `${this.horaFin.hora <= 9 ? '0' : ''}${this.horaFin.hora}${this.horaFin.minuto <= 9 ? '0' : ''}${this.horaFin.minuto}`;
+    return `${this.horaInicio.hora <= 9 ? '0' : ''}${this.horaInicio.hora}:0${this.horaInicio.minuto}`;
   }
 
 }

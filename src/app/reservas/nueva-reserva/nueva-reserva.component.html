@@ -10,10 +10,10 @@
               <div class="form-group col-6" >
                   <label for="doctor">Doctor</label>
                   <div class="input-group">
-                    <select class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor.idPersona">
+                    <select class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor">
                       <option selected disabled="true">Selecciona un Doctor</option>
                       <ng-container *ngFor="let persona of personas">
-                          <option [value]="persona.idPersona" *ngIf="persona.flag_es_doctor">
+                          <option [ngValue]="persona" *ngIf="persona.flag_es_doctor">
                             {{ persona.nombre }} {{ persona.apellido }}
                           </option>
                         </ng-container>
@@ -36,10 +36,10 @@
               <div class="form-group col-6">
                   <label for="paciente">Paciente</label>
                   <div class="input-group">
-                    <select class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente.idPersona">
+                    <select class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente">
                       <option selected disabled="true">Selecciona un Paciente</option>
                       <ng-container *ngFor="let persona of personas">
-                          <option [value]="persona.idPersona" *ngIf="!persona.flag_es_doctor">
+                          <option [ngValue]="persona" *ngIf="!persona.flag_es_doctor">
                             {{ persona.nombre }} {{ persona.apellido }}
                           </option>
                         </ng-container>
@@ -77,7 +77,7 @@
                   <td>{{group.fecha}}</td>
                   <td>{{group.horaInicio}}</td>
                   <td>{{group.horaFin}}</td>
-                  <td {{ Persona() }}></td>
+                  <td>{{group.idDoctor.nombre + " " + group.idDoctor.apellido }}</td>
                   <td>{{group.idPaciente.nombre + " " + group.idPaciente.apellido }}</td>
                   </tr>
               </tbody>

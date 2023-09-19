@@ -31,14 +31,10 @@ export class ReservaService {
   }
 
   agregarReserva(nuevaReserva: Reserva) {
-    this.getReservas().subscribe((reservas: Reserva[]) => {
-      const maxId = reservas.length === 0 ? 0 : Math.max(...reservas.map(reserva => reserva.idReserva));
-      nuevaReserva.idReserva = maxId + 1;
-    });
       const reservaData = {
         idReserva: nuevaReserva.idReserva,
-        idDoctor: nuevaReserva.idDoctor.idPersona,
-        idPaciente: nuevaReserva.idPaciente.idPersona,
+        idDoctor: JSON.parse(JSON.stringify(nuevaReserva.idDoctor)),
+        idPaciente: JSON.parse(JSON.stringify(nuevaReserva.idPaciente)),
         fecha: nuevaReserva.fecha,
         horaInicio: nuevaReserva.horaInicio,
         horaFin: nuevaReserva.horaFin,
