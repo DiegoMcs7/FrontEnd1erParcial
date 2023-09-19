@@ -15,12 +15,11 @@
     <button class="btn btn-primary mt-2 mb-4" (click)="agregarPersona()">Agregar Persona</button>
   </div>
 
-  
+
   <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered">
     <thead>
       <tr>
-        <th>Nombre</th>
-
+        <th style="display: none; ">Nombre</th>
         <th>Nombre</th>
         <th>Apellido</th>
         <th>Teléfono</th>
@@ -32,7 +31,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let persona of personas">
-        <td *ngIf="!persona.editFieldName">{{ persona.idPersona }}</td>
+        <td style="display: none; "*ngIf="!persona.editFieldName">{{ persona.idPersona }}</td>
 
         <td *ngIf="!persona.editFieldName">{{ persona.nombre }}</td>
         <td *ngIf="persona.editFieldName"><input style="width: 100%;" type="text" [(ngModel)]="persona.nombre" /> </td>

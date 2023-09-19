@@ -12,7 +12,6 @@ class Fecha {
   year: number;
   month: number;
   day: number;
-
   constructor() {
     const today = new Date();
     this.day = today.getDate();
@@ -66,7 +65,14 @@ export class NuevaReservaComponent implements OnInit {
   cargarReservas(): void {
     this.reservaService.getReservas().subscribe((reservas: Reserva[]) => {
       this.reservas = reservas;
+      this.cargarPersonas();
     });
+  }
+
+  get Persona(): string {
+    console.log("entrraaa");
+    return 'hola';
+
   }
 
   agregarReserva(): void {

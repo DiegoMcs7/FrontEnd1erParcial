@@ -77,10 +77,8 @@
                   <td>{{group.fecha}}</td>
                   <td>{{group.horaInicio}}</td>
                   <td>{{group.horaFin}}</td>
-                  <td>{{personas[group.idDoctor.idPersona].nombre + " " + personas[group.idDoctor.idPersona].apellido }}</td>
+                  <td {{ Persona() }}></td>
                   <td>{{group.idPaciente.nombre + " " + group.idPaciente.apellido }}</td>
-                  <td>
-                  </td>
                   </tr>
               </tbody>
           </table>
