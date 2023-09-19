@@ -59,7 +59,6 @@ export class PersonaService {
         .catch(error => {
           console.error(error);
         });
-
   }
 
   editarPersona(idPersona: number, nuevaPersona: Persona) {

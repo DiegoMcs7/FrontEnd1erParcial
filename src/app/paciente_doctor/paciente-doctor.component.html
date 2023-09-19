@@ -15,9 +15,12 @@
     <button class="btn btn-primary mt-2 mb-4" (click)="agregarPersona()">Agregar Persona</button>
   </div>
 
+  
   <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered">
     <thead>
       <tr>
+        <th>Nombre</th>
+
         <th>Nombre</th>
         <th>Apellido</th>
         <th>Teléfono</th>
@@ -29,6 +32,8 @@
     </thead>
     <tbody>
       <tr *ngFor="let persona of personas">
+        <td *ngIf="!persona.editFieldName">{{ persona.idPersona }}</td>
+
         <td *ngIf="!persona.editFieldName">{{ persona.nombre }}</td>
         <td *ngIf="persona.editFieldName"><input style="width: 100%;" type="text" [(ngModel)]="persona.nombre" /> </td>
 
@@ -58,4 +63,16 @@
       </tr>
     </tbody>
   </table>
+  <form (submit)="filterById()">
+    <label>
+      Min
+      <input type="number" name="min" id="min" [(ngModel)]="min" />
+    </label>
+    <label>
+      Max
+      <input type="number" name="max" id="max" [(ngModel)]="max" />
+    </label>
+    <button class="btn btn-primary" type="submit">Filtrar por ID</button>
+  </form>
+  <br />
 </div>

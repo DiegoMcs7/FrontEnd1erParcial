@@ -20,15 +20,20 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   dtElement: DataTableDirective | undefined;
   dtOptions:DataTables.Settings={}
   dtTrigger: Subject<any> = new Subject<any>();
+  min: number = 0;
+  max: number = 0;
 
   ngOnInit(): void {
+    
     this.dtOptions = {
         pagingType: 'full_numbers',
         language: {
           url:'//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
         },
         searching: true,
+        responsive:true,
         columns: [
+          { searchable: true },
           { searchable: true },
           { searchable: true },
           { searchable: true },
@@ -44,8 +49,27 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.next(null);
   }
 
+  filterById() {
+    
+    this.dtElement?.dtInstance.then((dtInstance: DataTables.Api) => {
+      console.log(dtInstance.columns().data())
+      // Obtén los valores min y max del formulario
+      const min = this.min;
+      const max = this.max;
+      this.dtElement?.dtInstance.then((dtInstance: DataTables.Api) => {
+        console.log(dtInstance.columns(1));
+        // Aplicar el filtro a la columna 'idPersona' (ajusta el índice según tu estructura de columna)
+        // Construye la expresión regular
+        const regExSearch = `^([${min}-${max}])$`;
+        // Aplica el filtro a la columna que desees (cambia el índice según la columna)
+        dtInstance.column(0).search(regExSearch, true, false).draw();     
+      });
+        // Realiza el filtro en la columna 'idPersona' de la tabla
+    });
+  }
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
+    $.fn['dataTable'].ext.search.pop();
     this.dtTrigger.unsubscribe();
   }
 
