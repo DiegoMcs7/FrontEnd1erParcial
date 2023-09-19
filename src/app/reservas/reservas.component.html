@@ -38,20 +38,12 @@
   <div class="row">
       <div class="form-group col-12 col-lg-6 mt-lg-4">
           <label for="fechaDesde">Desde</label>
-          <input type="date" class="form-control" id="fechaDesde" name="fechaDesde" [(ngModel)]="filtros.fechaDesde">
       </div>
       <div class="form-group col-12 col-lg-6 mt-lg-4">
           <label for="fechaHasta">Hasta</label>
-          <input type="date" class="form-control" id="fechaHasta" name="fechaHasta" [(ngModel)]="filtros.fechaHasta">
       </div>
   </div>
 </form>
-<!--
-<div class="row">
-  <div class="col-md-12 text-end">
-      <button type="button" class="btn btn-info mt-2" (click)="buscar()">Buscar</button>
-  </div>
-</div> -->
 
 <div class="table-responsive" style="margin-top: 20px;">
   <table class="table">
@@ -61,7 +53,7 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="let reserva of data | paginate: config">
+          <tr *ngFor="let reserva of data">
           <td>{{reserva.fecha}}</td>
           <td>{{reserva.horaInicio}}</td>
           <td>{{reserva.horaFin}}</td>
@@ -75,18 +67,3 @@
       </tbody>
   </table>
 </div>
-
-<router-outlet></router-outlet>
-<pagination-controls
-  [previousLabel]="back"
-  [nextLabel]="next"
-  (pageChange)="pageChanged($event)">
-</pagination-controls>
-
-<!-- <div class="modal fade" id="doctorModal" tabindex="-1" aria-hidden="true">
-  <app-persona (seleccionarDoctorEvent)="seleccionarDoctor($event)"></app-persona>
-</div>
-
-<div class="modal fade" id="pacienteModal" tabindex="-1" aria-hidden="true">
-  <app-persona (seleccionarPacienteEvent)="seleccionarPaciente($event)"></app-persona>
-</div> -->

@@ -45,20 +45,7 @@ export class ModificarReservaComponent implements OnInit {
   constructor(private reservaService: ReservaService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(paramMap => {
-      this.reserva.idReserva = parseInt(paramMap.get('id') ?? '');
-      this.reservaService.getReserva(this.reserva.idReserva)
-        .subscribe((data: Reserva) => {
-          this.reserva = data;
-          this.reserva.idDoctor.fullName = this.reserva.idDoctor.nombre + ' ' + this.reserva.idDoctor.apellido;
-          this.reserva.idPaciente.fullName = this.reserva.idPaciente.nombre + ' ' + this.reserva.idPaciente.apellido;
-          this.fecha = this.getFecha(this.reserva.fecha);
-          console.log(this.reserva.flagAsistio === "S")
-          this.flagAsistio = this.reserva.flagAsistio === "S";
-          this.getHorarioObject();
-          console.log(this.reserva);
-        });
-    });
+
   }
 
   getFecha(stringDate: string): Fecha {

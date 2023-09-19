@@ -63,7 +63,7 @@
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" routerLink="/reservas">Volver</button>
-          <button type="button" class="btn btn-primary" (click)="crearReserva()">Guardar</button>
+          <button type="button" class="btn btn-primary" (click)="agregarReserva()">Guardar</button>
       </div>
       <div class="table-responsive">
           <table class="table">
@@ -73,24 +73,18 @@
                   </tr>
               </thead>
               <tbody>
-                  <tr *ngFor="let group of data | paginate: config">
+                  <tr *ngFor="let group of data">
                   <td>{{group.fecha}}</td>
                   <td>{{group.horaInicio}}</td>
                   <td>{{group.horaFin}}</td>
                   <td>{{group.idDoctor.nombre + " " + group.idDoctor.apellido }}</td>
                   <td>{{group.idPaciente.nombre + " " + group.idPaciente.apellido }}</td>
                   <td>
-                      <button class="btn btn-outline-success mx-2" (click)="seleccionarTurno(group.horaInicio, group.horaFin)">Seleccionar</button>
                   </td>
                   </tr>
               </tbody>
           </table>
       </div>
-      <pagination-controls
-          [previousLabel]="back"
-          [nextLabel]="next"
-          (pageChange)="pageChanged($event)">
-      </pagination-controls>
   </div>
 </div>
 

@@ -8,7 +8,6 @@ class Hora {
   hora!: number;
   minuto: number = 0;
 }
-
 class Fecha {
   year: number;
   month: number;
@@ -21,7 +20,6 @@ class Fecha {
     this.year = today.getFullYear();
   }
 }
-
 @Component({
   selector: 'app-nueva-reserva',
   templateUrl: './nueva-reserva.component.html',
@@ -33,24 +31,29 @@ export class NuevaReservaComponent implements OnInit {
   personas: Persona[] = [];
 
   public columns = ["Fecha","Hora inicio","Hora fin","Doctor","Paciente","Acciones"];
+  nuevaReserva: Reserva = new Reserva();
   reservas: Reserva[] = []
   reserva: Reserva = new Reserva();
   doctor: Persona = new Persona();
   paciente: Persona = new Persona();
   horaInicio: Hora = new Hora();
   horaFin: Hora = new Hora();
+  nuevaPersona: Persona = new Persona();
   fecha: Fecha = new Fecha();
-  config = {
-    itemsPerPage: 5,
-    currentPage: 1,
-    totalItems: 1
-  }
-  next = "Siguiente"
-  back = "Atras"
+
   constructor(private reservaService: ReservaService, private personaService: PersonaService) { }
 
   ngOnInit(): void {
     this.cargarPersonas();
+    this.cargarReservas();
+  }
+
+  getDateString() {
+    return `${this.fecha.year}${this.fecha.month <= 9 ? '0' : ''}${this.fecha.month}${this.fecha.day <= 9 ? '0' : ''}${this.fecha.day}`;
+  }
+
+  onDateChange() {
+    this.doctor.idPersona, this.getDateString();
   }
 
   cargarPersonas(): void {
@@ -59,72 +62,36 @@ export class NuevaReservaComponent implements OnInit {
     });
   }
 
-  onChangeHoraInicio() {
-    console.log(this.doctor);
-  }
-
-  getDateString() {
-    return `${this.fecha.year}/${this.fecha.month <= 9 ? '0' : ''}${this.fecha.month}/${this.fecha.day <= 9 ? '0' : ''}${this.fecha.day}`;
-  }
-
-  onDateChange() {
-    this.getReservas(this.doctor.idPersona, this.getDateString());
-  }
-
-  crearReserva() {
-
-    let reservaBody = new ReservaPostBody();
-
-    reservaBody.fechaCadena = this.getDateString();
-    reservaBody.horaInicioCadena = `${this.horaInicio.hora <= 9 ? '0' : ''}${this.horaInicio.hora}:0${this.horaInicio.minuto}`;
-    reservaBody.horaFinCadena = `${this.horaFin.hora <= 9 ? '0' : ''}${this.horaFin.hora}:0${this.horaFin.minuto}`;
-    reservaBody.idPaciente = this.paciente;
-    reservaBody.idDoctor = this.doctor;
-
-    this.reservaService.postReserva(reservaBody).subscribe((data: Reserva) => console.log(JSON.stringify(data)));
-  }
-
-  seleccionarTurno(horaInicio: string, horaFin: string) {
-    this.horaInicio.hora = Number(horaInicio.split(' ').pop()?.substring(0, 2));
-    this.horaInicio.minuto = Number(horaInicio.split(' ').pop()?.substring(3, 5));
-    this.horaFin.hora = Number(horaFin.split(' ').pop()?.substring(0, 2));
-    this.horaFin.minuto = Number(horaFin.split(' ').pop()?.substring(3, 5));
-  }
-
-  getReservas(idDoctor: number, fecha: string) {
-    let currentPage = this.config.currentPage;
-    let itemsPerPage = this.config.itemsPerPage;
-
-    let inicio = currentPage - 1;
-    inicio = inicio * itemsPerPage;
-
-    this.reservaService.getAgenda(idDoctor, fecha, itemsPerPage, inicio)
-    .subscribe((data: Reserva[]) => {
-     this.data = data;
+  cargarReservas(): void {
+    this.reservas = [];
+    this.reservaService.getReservas().subscribe((reservas: Reserva[]) => {
+      this.reservas = reservas;
     });
   }
 
-  seleccionarDoctor(doctor: Persona){
-    this.doctor = doctor
-    this.doctor.fullName = doctor.nombre + " " + doctor.apellido;
-    this.getReservas(doctor.idPersona, this.getDateString());
-    console.log(`Se ha seleccionado el doctor con id = ${doctor.idPersona}`);
+  agregarReserva(): void {
+    this.nuevaReserva.fecha = this.getDateString();
+    this.nuevaReserva.horaInicio = this.cambioInicio(); // Llama a la función para obtener la hora de inicio
+    this.nuevaReserva.horaFin = this.cambioFin(); // Llama a la función para obtener la hora de fin
+
+    if (this.nuevaReserva.idDoctor && this.nuevaReserva.idPaciente) {
+      this.reservaService.agregarReserva(this.nuevaReserva, this.nuevaPersona)
+        console.log('Reserva agregada con éxito.');
+        this.nuevaReserva = new Reserva();
+        this.cargarReservas();
+    } else {
+      console.error('Asegúrate de seleccionar un doctor y un paciente.');
+    }
   }
 
-  seleccionarPaciente(paciente: Persona){
-    this.paciente = paciente
-    this.paciente.fullName = paciente.nombre + " " + paciente.apellido;
-  }
-
-  pageChanged(event: number){
-    this.config.currentPage = event;
-  }
-
-  cambioFin() {
+  cambioFin(): string {
     this.horaInicio.hora = this.horaFin.hora - 1;
+    return `${this.horaInicio.hora <= 9 ? '0' : ''}${this.horaInicio.hora}${this.horaInicio.minuto <= 9 ? '0' : ''}${this.horaInicio.minuto}`;
   }
-  cambioInicio() {
+
+  cambioInicio(): string {
     this.horaFin.hora = this.horaInicio.hora + 1;
+    return `${this.horaFin.hora <= 9 ? '0' : ''}${this.horaFin.hora}${this.horaFin.minuto <= 9 ? '0' : ''}${this.horaFin.minuto}`;
   }
 
 }

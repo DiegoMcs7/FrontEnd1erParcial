@@ -1,78 +1,78 @@
 import { Injectable } from '@angular/core';
-import { listadatos } from '../model/datos';
 import { Reserva, ReservaPostBody, ReservaPutBody } from '../model/reserva.model';
 import { base_url } from '../base_url';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Persona } from '../model/paciente_doctor.model';
 @Injectable({
   providedIn: 'root'
 })
 export class ReservaService {
-
+  doctor: Persona = new Persona();
+  paciente: Persona = new Persona();
   api = base_url;
 
-  constructor(private http: HttpClient) { }
+  constructor(private angularFirestore: AngularFirestore,private http: HttpClient) { }
 
-  getReservas(filtros: any, itemsPerPage:number,inicio:number): Observable<listadatos<Reserva>> {
-    let ejemplo: any = { }
-    if (filtros.fechaDesde) {
-      ejemplo['fechaDesdeCadena'] = filtros.fechaDesde.split('-').join('')
-    }
-    if (filtros.fechaHasta) {
-      ejemplo['fechaHastaCadena'] = filtros.fechaHasta.split('-').join('')
-    }
-    if (filtros.idPaciente) {
-      ejemplo["idPaciente"] = { "idPersona": filtros.idPaciente }
-    }
-    if (filtros.idDoctor) {
-      ejemplo['idDoctor'] = { "idPersona": filtros.idDoctor}
-    }
-
-    ejemplo['flagEstado'] = "R";
-
-    console.log(JSON.stringify(ejemplo));
-      let params = new HttpParams()
-        .set('cantidad', itemsPerPage)
-        .set('inicio', inicio)
-        .set('ejemplo', JSON.stringify(ejemplo));
-
-    return this.http.get<listadatos<Reserva>>(`${this.api}stock-pwfe/reserva`, {params})
+  getReservas(): Observable<Reserva[]> {
+    return this.angularFirestore
+      .collection("reserva-collection")
+      .snapshotChanges()
+      .pipe(
+        map(actions => {
+          return actions.map(action => {
+            const data = action.payload.doc.data() as Reserva; // Ajusta el tipo según tus datos reales
+            const id = action.payload.doc.id;
+            return { id, ...data };
+          });
+        })
+      );
   }
 
-  postReserva(reserva: ReservaPostBody): Observable<Reserva> {
-    console.log('Agregando reserva' + JSON.stringify(reserva));
-    return this.http.post<Reserva>(`${this.api}stock-pwfe/reserva`, reserva, {
-      headers: {
-        "usuario": localStorage.getItem('userSession') as string,
-      }
+  agregarReserva(nuevaReserva: Reserva, nuevaPersona: Persona) {
+    return this.getReservas().subscribe((reservas: Reserva[]) => {
+      const maxId = reservas.length === 0 ? 0 : Math.max(...reservas.map(reserva => reserva.idReserva));
+      nuevaReserva.idReserva = maxId + 1;
+
+      const reservaData = {
+        idReserva: nuevaReserva.idReserva,
+        idDoctor: nuevaPersona.flag_es_doctor ? nuevaReserva.idDoctor : null,
+        idPaciente: nuevaPersona.flag_es_doctor ? null : nuevaReserva.idPaciente,
+        fecha: nuevaReserva.fecha,
+        horaInicio: nuevaReserva.horaInicio,
+        horaFin: nuevaReserva.horaFin,
+      };
+
+      // Agregar la nueva reserva con el ID único a Firestore
+      this.angularFirestore
+        .collection("reserva-collection")
+        .add(reservaData)
+        .then(response => {
+          console.log(`Reserva con ID ${response.id} agregada con éxito.`);
+        })
+        .catch(error => {
+          console.error('Error al agregar la reserva:', error);
+        });
     });
   }
 
-  cancelarReserva(idReserva: number): Observable<void> {
-    console.log(`${this.api}stock-pwfe/reserva/${idReserva}`)
-    return this.http.delete<void>(`${this.api}stock-pwfe/reserva/${idReserva}`, {
-      headers: {
-        "usuario": localStorage.getItem('userSession') as string,
-      }
-    });
-  }
+  cancelarReserva(idReserva: string) {
+    // Supongamos que tienes una reserva con ID 'idDeLaReserva'
+    const reservaRef = this.angularFirestore.collection('reserva-collection').doc('idReserva');
 
-  getAgenda(idPersona: number, fecha: string, itemsPerPage: number, inicio: number): Observable<Reserva[]> {
-    console.log('Obteniendo agenda');
-    let params = new HttpParams()
-        .set('cantidad', itemsPerPage)
-        .set('inicio', inicio)
-        .set('fecha', fecha)
-        .set('disponible', 'S');
-    return this.http.get<Reserva[]>(`${this.api}stock-pwfe/persona/${idPersona}/agenda`, {params});
-  }
-
-  getReserva(idReserva: number): Observable<Reserva> {
-    return this.http.get<Reserva>(`${this.api}stock-pwfe/reserva/${idReserva}`);
+    // Actualiza el estado de la reserva a "cancelada"
+    reservaRef.update({ flagEstado: 'cancelada' })
+      .then(() => {
+        console.log(`Reserva con ID ${idReserva} cancelada.`);
+      })
+      .catch(error => {
+        console.error(`Error al cancelar la reserva con ID ${idReserva}:`, error);
+      });
   }
 
   modificarReserva(reserva: ReservaPutBody): Observable<void> {
     return this.http.put<void>(`${this.api}stock-pwfe/reserva`, reserva);
   }
+
 }
