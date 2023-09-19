@@ -66,7 +66,7 @@ export class NuevaReservaComponent implements OnInit {
   cargarReservas(): void {
     this.reservaService.getReservas().subscribe((reservas: Reserva[]) => {
       this.reservas = reservas;
-      this.max_id= this.max_id + this.reservas.length;
+      this.max_id= this.reservas.length;
     });
 
   }
