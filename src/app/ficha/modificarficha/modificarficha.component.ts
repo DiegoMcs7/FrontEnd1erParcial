@@ -9,7 +9,7 @@ import { ReservaService } from '../../service/reserva.service';
 import { PersonaService } from '../../service/paciente_doctor.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-
+import { ToastrService } from 'ngx-toastr';
 class Fecha {
   year: number;
   month: number;
@@ -42,7 +42,9 @@ export class ModificarfichaComponent implements OnInit {
   max_id: number = 0;
   fecha: Fecha = new Fecha();
 
-  constructor(private reservaService: ReservaService, private categoriaService: CategoriaService, private serviceFicha: ServicefichaService, private personaService: PersonaService, private route: ActivatedRoute) {
+  constructor(private reservaService: ReservaService, private categoriaService: CategoriaService
+    , private serviceFicha: ServicefichaService,private toastr: ToastrService,
+     private personaService: PersonaService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -131,6 +133,7 @@ export class ModificarfichaComponent implements OnInit {
       // Llamar al servicio para agregar la ficha
       this.serviceFicha.agregarFicha(this.nuevaFicha)
         console.log('Ficha agregada con éxito.');
+        this.toastr.success('Se agregó una ficha');
         this.nuevaFicha = new Ficha();
         this.cargarFichas();
     } else {

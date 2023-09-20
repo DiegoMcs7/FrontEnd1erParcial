@@ -3,6 +3,7 @@ import { Categoria } from '../model/categoria.model';
 import { CategoriaService } from '../service/categoria.service';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.component.html',
@@ -15,7 +16,7 @@ export class CategoriasComponent implements OnInit {
   edit_id: number = 0; // Campo edit_id como variable local
   editMode = false; // Modo de edición
   max_id: number = 0;
-  constructor(private categoriaService: CategoriaService) {}
+  constructor(private categoriaService: CategoriaService,private toastr: ToastrService) {}
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
   dtOptions:DataTables.Settings={}
@@ -66,6 +67,7 @@ export class CategoriasComponent implements OnInit {
     if (this.nuevaCategoria.descripcion ) {
       this.categoriaService.agregarCategoria(this.nuevaCategoria)
         console.log('Categoria agregada con éxito.');
+        this.toastr.success('Se agregó una categoria');
         this.nuevaCategoria = new Categoria();
         this.cargarCategorias();
     } else {

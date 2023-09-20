@@ -3,7 +3,7 @@ import { Persona } from '../../model/paciente_doctor.model';
 import { PersonaService } from '../../service/paciente_doctor.service'
 import { Reserva, ReservaPostBody } from '../../model/reserva.model';
 import { ReservaService } from '../../service/reserva.service';
-
+import { ToastrService } from 'ngx-toastr';
 class Hora {
   hora!: number;
   minuto: number = 0;
@@ -42,7 +42,7 @@ export class NuevaReservaComponent implements OnInit {
   max_id: number = 0;
 
 
-  constructor(private reservaService: ReservaService, private personaService: PersonaService) { }
+  constructor(private reservaService: ReservaService, private personaService: PersonaService,private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.cargarPersonas();
@@ -83,6 +83,7 @@ export class NuevaReservaComponent implements OnInit {
     if (this.nuevaReserva.idDoctor && this.nuevaReserva.idPaciente) {
       this.reservaService.agregarReserva(this.nuevaReserva)
         console.log('Reserva agregada con éxito.');
+        this.toastr.success('Se agregó una reserva');
         this.nuevaReserva = new Reserva();
         this.cargarReservas();
     } else {

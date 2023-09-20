@@ -4,10 +4,9 @@ import { Ficha } from '../../model/fichas';
 import { Persona } from '../../model/paciente_doctor.model';
 import { CategoriaService } from '../../service/categoria.service';
 import { ServicefichaService } from '../../service/serviceficha.service';
-import { PersonaService } from '../../service/paciente_doctor.service';
-import { ActivatedRoute } from '@angular/router';
+import { PersonaService } from '../../service/paciente_doctor.service'
 import { Observable } from 'rxjs';
-
+import { ToastrService } from 'ngx-toastr';
 class Fecha {
   year: number;
   month: number;
@@ -29,7 +28,6 @@ export class NuevafichaComponent implements OnInit {
   nuevaFicha: Ficha = new Ficha();
   fichas: Ficha[] = [];
   ficha: Ficha = new Ficha();
-  ficha1: Ficha | undefined;
   doctor: Persona = new Persona();
   paciente: Persona = new Persona();
   categorias: Categoria[] = []
@@ -38,7 +36,8 @@ export class NuevafichaComponent implements OnInit {
   max_id: number = 0;
   fecha: Fecha = new Fecha();
 
-  constructor(private categoriaService: CategoriaService, private serviceFicha: ServicefichaService, private personaService: PersonaService, private route: ActivatedRoute) { }
+  constructor(private categoriaService: CategoriaService, private serviceFicha: ServicefichaService,
+    private personaService: PersonaService,private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.getCategorias()
@@ -99,6 +98,7 @@ export class NuevafichaComponent implements OnInit {
       this.serviceFicha.agregarFicha(this.nuevaFicha)
         console.log('Ficha agregada con éxito.');
         this.nuevaFicha = new Ficha();
+        this.toastr.success('Se agregó una ficha');
         this.cargarFichas();
     } else {
       console.error('Asegúrate de completar todos los campos obligatorios.');

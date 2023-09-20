@@ -10,7 +10,7 @@
                   <label for="doctor">Doctor</label>
                   <div class="input-group">
                     <select class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor">
-                      <option selected disabled="true">Selecciona un Doctor</option>
+                      <option disabled selected>Selecciona un Doctor</option>
                       <ng-container *ngFor="let persona of personas">
                           <option [ngValue]="persona" *ngIf="persona.flag_es_doctor">
                             {{ persona.nombre }} {{ persona.apellido }}
@@ -23,7 +23,7 @@
                   <label for="paciente">Paciente</label>
                   <div class="input-group">
                     <select class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente">
-                      <option selected disabled="true">Selecciona un Paciente</option>
+                      <option disabled selected>Selecciona un Paciente</option>
                       <ng-container *ngFor="let persona of personas">
                           <option [ngValue]="persona" *ngIf="!persona.flag_es_doctor">
                             {{ persona.nombre }} {{ persona.apellido }}
@@ -37,7 +37,7 @@
               <div class="form-group col-6">
                   <label for="categoria">Categoria</label>
                   <select class="form-control" id="categoria" name="categoria" [(ngModel)]="categoria">
-                    <option value="">Selecciona una Categoria</option>
+                    <option disabled selected>Selecciona una Categoria</option>
                     <ng-container *ngFor="let categoria of categorias">
                         <option [ngValue]="categoria"> {{ categoria.descripcion }} </option>
                     </ng-container>
@@ -74,6 +74,6 @@
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" routerLink="/ficha">Volver</button>
       <button type="button" class="btn btn-primary" (click)="agregarFicha()">Guardar</button>
-  </div>
+    </div>
   </div>
 </div>

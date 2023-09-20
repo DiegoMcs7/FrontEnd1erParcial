@@ -3,7 +3,7 @@ import { Persona } from '../model/paciente_doctor.model';
 import { DataTableDirective } from 'angular-datatables';
 import { PersonaService } from '../service/paciente_doctor.service'
 import { Subject } from 'rxjs';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-persona',
   templateUrl: './paciente-doctor.component.html',
@@ -15,7 +15,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   personaEditada: Persona = new Persona();
   edit_id: number = 0; // Campo edit_id como variable local
   editMode = false; // Modo de edición
-  constructor(private personaService: PersonaService) {}
+  constructor(private personaService: PersonaService,private toastr: ToastrService) {}
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
   dtOptions:DataTables.Settings={}
@@ -78,6 +78,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
       this.nuevaPersona.cedula
     ) {
       this.personaService.agregarPersona(this.nuevaPersona);
+      this.toastr.success('Se agregó una persona');
       this.nuevaPersona = new Persona();
       this.cargarPersonas();
       this.rerender()

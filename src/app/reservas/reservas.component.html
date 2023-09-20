@@ -12,7 +12,7 @@
           <label for="doctor">Doctor</label>
           <div class="input-group">
             <select class="form-control" id="doctor" name="doctor" [(ngModel)]="personaSeleccionada1">
-                <option value="">Selecciona un Doctor</option>
+                <option disabled selected>Selecciona un Doctor</option>
                 <ng-container *ngFor="let persona of personas">
                     <option [ngValue]="persona" *ngIf="persona.flag_es_doctor">
                       {{ persona.nombre }} {{ persona.apellido }}
@@ -25,7 +25,7 @@
           <label for="paciente">Paciente</label>
           <div class="input-group">
             <select class="form-control" id="paciente" name="paciente" [(ngModel)]="personaSeleccionada2">
-                <option value="">Selecciona un paciente</option>
+                <option disabled selected>Selecciona un paciente</option>
                 <ng-container *ngFor="let persona of personas">
                     <option [ngValue]="persona" *ngIf="!persona.flag_es_doctor">
                       {{ persona.nombre }} {{ persona.apellido }}

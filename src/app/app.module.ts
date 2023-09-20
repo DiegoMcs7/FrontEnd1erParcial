@@ -18,12 +18,14 @@ import { ModificarReservaComponent } from './reservas/modificar-reserva/modifica
 import { DataTablesModule } from 'angular-datatables';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FichaComponent } from './ficha/ficha.component';
+import { ServicefichaService } from './service/serviceficha.service';
 import { NuevafichaComponent } from './ficha/nuevaficha/nuevaficha.component';
 import { ModificarfichaComponent } from './ficha/modificarficha/modificarficha.component';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
 import { environment } from 'src/environments/environment';
-
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,14 +50,17 @@ import { environment } from 'src/environments/environment';
     DataTablesModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     CategoriaService,
     PersonaService,
-    ReservaService
+    ReservaService,
+    ServicefichaService,
   ],
   bootstrap: [
-    AppComponent
+    AppComponent,
   ],
 })
 export class AppModule {}
