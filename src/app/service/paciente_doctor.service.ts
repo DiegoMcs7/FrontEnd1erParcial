@@ -30,14 +30,6 @@ export class PersonaService {
   }
 
   agregarPersona(nuevaPersona: Persona) {
-    // Obtener las personas actuales
-    this.getPersonas().subscribe(personas => {
-      // Encontrar el ID más alto entre las personas existentes o establecerlo en 0 si no hay registros
-      const maxId = personas.length === 0 ? 0 : Math.max(...personas.map(persona => persona.idPersona));
-
-      // Asignar el próximo ID basado en el máximo encontrado
-      nuevaPersona.idPersona = maxId + 1;
-    });
       // Convierte la instancia de Persona en un objeto plano
       const personaData = {
         idPersona: nuevaPersona.idPersona,

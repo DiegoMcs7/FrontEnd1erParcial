@@ -22,9 +22,10 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   dtTrigger: Subject<any> = new Subject<any>();
   min: number = 0;
   max: number = 0;
+  max_id: number = 0;
 
   ngOnInit(): void {
-    
+
     this.dtOptions = {
         pagingType: 'full_numbers',
         language: {
@@ -50,7 +51,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   filterById() {
-    
+
     this.dtElement?.dtInstance.then((dtInstance: DataTables.Api) => {
       console.log(dtInstance.columns().data())
       // Obtén los valores min y max del formulario
@@ -62,7 +63,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
         // Construye la expresión regular
         const regExSearch = `^([${min}-${max}])$`;
         // Aplica el filtro a la columna que desees (cambia el índice según la columna)
-        dtInstance.column(0).search(regExSearch, true, false).draw();     
+        dtInstance.column(0).search(regExSearch, true, false).draw();
       });
         // Realiza el filtro en la columna 'idPersona' de la tabla
     });
@@ -84,6 +85,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
     this.personas = [];
     this.personaService.getPersonas().subscribe((personas: Persona[]) => {
       this.personas = personas;
+      this.max_id= this.personas.length;
       this.rerender();
     });
   }
@@ -96,6 +98,8 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
       this.nuevaPersona.email &&
       this.nuevaPersona.cedula
     ) {
+      this.max_id= this.max_id + 1;
+      this.nuevaPersona.idPersona = this.max_id;
       this.personaService.agregarPersona(this.nuevaPersona);
       this.nuevaPersona = new Persona();
       this.cargarPersonas();

@@ -6,7 +6,7 @@
       <button type="button" class="btn btn-primary" routerLink="nuevo" style="margin-bottom: 5px;">Nueva Reserva</button>
   </div>
 </div>
-<form>
+<form (submit)="busquedaFiltrada()">
   <div class="row">
       <div class="form-group col-12 col-lg-6">
           <label for="doctor">Doctor</label>
@@ -14,7 +14,7 @@
             <select class="form-control" id="doctor" name="doctor" [(ngModel)]="personaSeleccionada1">
                 <option value="">Selecciona un Doctor</option>
                 <ng-container *ngFor="let persona of personas">
-                    <option [value]="persona.idPersona" *ngIf="persona.flag_es_doctor">
+                    <option [ngValue]="persona" *ngIf="persona.flag_es_doctor">
                       {{ persona.nombre }} {{ persona.apellido }}
                     </option>
                   </ng-container>
@@ -27,7 +27,7 @@
             <select class="form-control" id="paciente" name="paciente" [(ngModel)]="personaSeleccionada2">
                 <option value="">Selecciona un paciente</option>
                 <ng-container *ngFor="let persona of personas">
-                    <option [value]="persona.idPersona" *ngIf="!persona.flag_es_doctor">
+                    <option [ngValue]="persona" *ngIf="!persona.flag_es_doctor">
                       {{ persona.nombre }} {{ persona.apellido }}
                     </option>
                 </ng-container>
@@ -38,10 +38,27 @@
   <div class="row">
       <div class="form-group col-12 col-lg-6 mt-lg-4">
           <label for="fechaDesde">Desde</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                   name="dp" ngbDatepicker #d1="ngbDatepicker" [(ngModel)]="fecha_inicio" (ngModelChange)="onDateChange()">
+            <div class="input-group1-append">
+              <button class="btn btn-outline-info" (click)="d1.toggle()" type="button">Elegir fecha</button>
+            </div>
+          </div>
       </div>
       <div class="form-group col-12 col-lg-6 mt-lg-4">
           <label for="fechaHasta">Hasta</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                   name="dp" ngbDatepicker #d2="ngbDatepicker" [(ngModel)]="fecha_fin" (ngModelChange)="onDateChange()">
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" (click)="d2.toggle()" type="button">Elegir fecha</button>
+            </div>
+          </div>
       </div>
+  </div>
+  <div class="form-group center mt-lg-4">
+  <button class="btn btn-primary" type="submit">Filtrar</button>
   </div>
 </form>
 
@@ -53,7 +70,7 @@
           </tr>
       </thead>
       <tbody>
-          <tr *ngFor="let reserva of data">
+          <tr *ngFor="let reserva of reservas_filtradas">
           <td>{{reserva.fecha}}</td>
           <td>{{reserva.horaInicio}}</td>
           <td>{{reserva.horaFin}}</td>
