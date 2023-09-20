@@ -71,12 +71,6 @@ export class NuevaReservaComponent implements OnInit {
 
   }
 
-  get Persona(): string {
-    console.log("entrraaa");
-    return 'hola';
-
-  }
-
   agregarReserva(): void {
     this.max_id= this.max_id + 1;
     this.nuevaReserva.idReserva = this.max_id;

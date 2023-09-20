@@ -6,6 +6,18 @@ import { CategoriaService } from '../../service/categoria.service';
 import { ServicefichaService } from '../../service/serviceficha.service';
 import { PersonaService } from '../../service/paciente_doctor.service'
 import { Observable } from 'rxjs';
+
+class Fecha {
+  year: number;
+  month: number;
+  day: number;
+  constructor() {
+    const today = new Date();
+    this.day = today.getDate();
+    this.month = today.getMonth() + 1;
+    this.year = today.getFullYear();
+  }
+}
 @Component({
   selector: 'app-nuevaficha',
   templateUrl: './nuevaficha.component.html',
@@ -13,19 +25,30 @@ import { Observable } from 'rxjs';
 })
 
 export class NuevafichaComponent implements OnInit {
+  nuevaFicha: Ficha = new Ficha();
+  fichas: Ficha[] = [];
   ficha: Ficha = new Ficha();
   doctor: Persona = new Persona();
   paciente: Persona = new Persona();
   categorias: Categoria[] = []
   categoria: Categoria = new Categoria()
   personas: Persona[] = [];
-  personaSeleccionada1: number | undefined;
-  personaSeleccionada2: number | undefined;
+  max_id: number = 0;
+  fecha: Fecha = new Fecha();
+
   constructor(private categoriaService: CategoriaService, private serviceFicha: ServicefichaService, private personaService: PersonaService) { }
 
   ngOnInit(): void {
     this.getCategorias()
     this.cargarPersonas();
+    this.cargarFichas();
+  }
+
+  cargarFichas(): void {
+    this.fichas = [];
+    this.serviceFicha.getFichas().subscribe((fichas: Ficha[]) => {
+      this.fichas = fichas;
+    });
   }
 
   cargarPersonas(): void {
@@ -34,27 +57,50 @@ export class NuevafichaComponent implements OnInit {
     });
 
   }
-  seleccionarDoctor(doctor: Persona){
-    this.doctor = doctor
-    this.doctor.fullName = doctor.nombre + " " + doctor.apellido;
-  }
 
-  seleccionarPaciente(paciente: Persona){
-    this.paciente = paciente
-    this.paciente.fullName = paciente.nombre + " " + paciente.apellido;
-  }
   getCategorias(){
     this.categoriaService.getCategorias().subscribe((data: Categoria[]) => {
       this.categorias = data;
     });
   }
 
-  guardarFicha(){
-    this.ficha.idPaciente = new Persona;
-    this.ficha.idDoctor = new Persona;
-    this.ficha.idPaciente.idPersona = this.paciente.idPersona
-    this.ficha.idDoctor.idPersona = this.doctor.idPersona
-    this.serviceFicha.postficha(this.ficha).subscribe()
+  getDateString() {
+    return `${this.fecha.year}/${this.fecha.month <= 9 ? '0' : ''}${this.fecha.month}/${this.fecha.day <= 9 ? '0' : ''}${this.fecha.day}`;
   }
+
+  onDateChange() {
+    this.doctor.idPersona, this.getDateString();
+  }
+
+  agregarFicha(): void {
+    // Incrementar el max_id
+    this.max_id = this.max_id + 1;
+
+    // Asignar valores a nuevaFicha
+    this.nuevaFicha.idFichaClinica = this.max_id;
+    this.nuevaFicha.idDoctor = this.doctor;
+    this.nuevaFicha.idPaciente = this.paciente;
+    this.nuevaFicha.idCategoria = this.categoria;
+    this.nuevaFicha.fechaHora = this.getDateString();
+
+    // Comprobar que motivoConsulta, observacion y diagnostico no sean nulos o indefinidos
+    if (
+      this.nuevaFicha.idDoctor &&
+      this.nuevaFicha.idPaciente &&
+      this.nuevaFicha.idCategoria &&
+      this.nuevaFicha.motivoConsulta &&
+      this.nuevaFicha.observacion &&
+      this.nuevaFicha.diagnostico
+    ) {
+      // Llamar al servicio para agregar la ficha
+      this.serviceFicha.agregarFicha(this.nuevaFicha)
+        console.log('Ficha agregada con éxito.');
+        this.nuevaFicha = new Ficha();
+        this.cargarFichas();
+    } else {
+      console.error('Asegúrate de completar todos los campos obligatorios.');
+    }
+  }
+
 
 }

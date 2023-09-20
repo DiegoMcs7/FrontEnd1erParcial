@@ -1,65 +1,10 @@
-<p>ficha works!</p>
 <div class="row">
+  <div style="text-align: center;margin-top: 10px;">
+    <h3>Consultar Fichas</h3>
+  </div>
   <div class="col-md-12 text-end">
     <button type="button" class="btn btn-primary" routerLink="/ficha/nuevo">Nueva Ficha</button>  </div>
-</div>
-<form>
-  <div class="row">
-    <div class="form-group col-6" >
-        <label for="doctor">Doctor</label>
-        <div class="input-group">
-          <select class="form-control" id="doctor" name="doctor" [(ngModel)]="personaSeleccionada1">
-              <option value="">Selecciona un Doctor</option>
-              <ng-container *ngFor="let persona of personas">
-                  <option [value]="persona.idPersona" *ngIf="persona.flag_es_doctor">
-                    {{ persona.nombre }} {{ persona.apellido }}
-                  </option>
-                </ng-container>
-          </select>
-        </div>
-    </div>
-    <div class="form-group col-6">
-        <label for="paciente">Paciente</label>
-        <div class="input-group">
-          <select class="form-control" id="paciente" name="paciente" [(ngModel)]="personaSeleccionada2">
-              <option value="">Selecciona un Paciente</option>
-              <ng-container *ngFor="let persona of personas">
-                  <option [value]="persona.idPersona" *ngIf="!persona.flag_es_doctor">
-                    {{ persona.nombre }} {{ persona.apellido }}
-                  </option>
-              </ng-container>
-          </select>
-        </div>
-    </div>
-</div>
-<div class="row">
-  <div class="form-group col-6">
-    <label for="fechaDesde">Desde</label>
-    <input type="date" class="form-control" id="fechaDesde"  name="fechaDesde" [(ngModel)]="filtros.fechaDesde">
   </div>
-  <div class="form-group col-6">
-    <label for="fechaHasta">Hasta</label>
-    <input type="date" class="form-control" id="fechaHasta"  name="fechaHasta" [(ngModel)]="filtros.fechaHasta">
-  </div>
-</div>
-<div class="row">
-  <div class="form-group col-6">
-      <label for="categoria">Categoria</label>
-      <select class="form-select" id="categoria" name="categoria" [(ngModel)]="categoria" (ngModelChange)="getCategorias()">
-          <option *ngFor="let categoria of categorias" [ngValue]="categoria">{{categoria.descripcion}}</option>
-      </select>
-  </div>
-
-</div>
-</form>
-
-
-<div class="row">
-  <div class="col-md-12 text-end">
-    <button type="button" class="btn btn-info mt-2" (click)="buscar()">Buscar</button>
-  </div>
-</div>
-
 
 <div class="table-responsive" id="htmlData">
 <table class="table">
@@ -69,22 +14,16 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let group of data | paginate: config">
-      <td>{{group.fechaHora.split(" ")[0]}}</td>
-      <td>{{group.idDoctor.nombre + " " + group.idDoctor.apellido }}</td>
-      <td>{{group.idPaciente.nombre + " " + group.idPaciente.apellido }}</td>
-      <!-- <td>{{group.idCategoria.descripcion }}</td> -->
-      <td><button class="btn  btn-outline-success"  [routerLink]="[group.idFichaClinica,'editar']">Editar</button></td>
+    <tr *ngFor="let ficha of fichas ">
+      <td>{{ficha.fechaHora.split(" ")[0]}}</td>
+      <td>{{ficha.idDoctor.nombre + " " + ficha.idDoctor.apellido }}</td>
+      <td>{{ficha.idPaciente.nombre + " " + ficha.idPaciente.apellido }}</td>
+      <td>{{ficha.idCategoria }}</td>
+      <td><button class="btn  btn-outline-success"  [routerLink]="[ficha.idFichaClinica,'editar']">Editar</button></td>
     </tr>
   </tbody>
 </table>
 </div>
-<pagination-controls
-  id="paginationFicha"
-  [previousLabel]="back"
-  [nextLabel]="next"
-  (pageChange)="pageChanged($event)">
-</pagination-controls>
 
 <div>
   <button class="btn col col-lg-4 btn-danger btn-block ml-4" (click)="downloadPDF()">Exportar a PDF</button>

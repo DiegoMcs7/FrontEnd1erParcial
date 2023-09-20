@@ -9,13 +9,6 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx'
 
-type Filtro = {
-  fechaDesde ?: string,
-  fechaHasta?: string,
-  idDoctor?: number,
-  idPaciente?: number,
-  idCategoria?: number,
-};
 @Component({
   selector: 'app-ficha',
   templateUrl: './ficha.component.html',
@@ -25,28 +18,25 @@ export class FichaComponent implements OnInit {
 
   public data: Ficha[] = [];
   public columns = ["Fecha","Doctor","Paciente","Categoria","Acciones"];
-  config = {
-      id: "paginationFicha",
-      itemsPerPage: 5,
-      currentPage: 1,
-      totalItems: 1
-  }
 
-  next = "Siguiente"
-  back = "Atras"
   categorias: Categoria [] = []
-  doctor : Persona = new Persona()
-  paciente : Persona = new Persona()
   categoria: Categoria = new Categoria()
-  filtros: Filtro = {};
   personas: Persona[] = [];
-  personaSeleccionada1: number | undefined;
-  personaSeleccionada2: number | undefined;
+  fichas: Ficha [] = []
+
   constructor(private servicioFicha: ServicefichaService,private serviceCategoria: CategoriaService, private personaService: PersonaService) { }
 
   ngOnInit(){
     this.getCategorias()
     this.cargarPersonas();
+    this.cargarFichas();
+  }
+
+  cargarFichas(): void {
+    this.fichas = [];
+    this.servicioFicha.getFichas().subscribe((fichas: Ficha[]) => {
+      this.fichas = fichas;
+    });
   }
 
   cargarPersonas(): void {
@@ -54,39 +44,7 @@ export class FichaComponent implements OnInit {
       this.personas = data;
     });
   }
-  getFichas(){
-    let currentPage = this.config.currentPage;
-    let itemsPerPage = this.config.itemsPerPage;
-    let inicio = currentPage-1;
-    inicio = inicio*itemsPerPage;
-    this.servicioFicha.getfichas(this.filtros,itemsPerPage,inicio)
-    .subscribe((data:any)=>{
-     this.data = data.lista;
-     this.config.totalItems=data.totalDatos;
-    });
-  }
 
-  pageChanged(event: number){
-    this.config.currentPage = event;
-    this.getFichas()
-  }
-
-  buscar(): void{
-    this.config.currentPage = 1
-    this.filtros.idPaciente = this.paciente.idPersona
-    this.filtros.idDoctor = this.doctor.idPersona
-
-    this.getFichas()
-  }
-  seleccionarDoctor(doctor: Persona){
-    this.doctor = doctor
-    this.doctor.fullName = doctor.nombre + " " + doctor.apellido;
-  }
-
-  seleccionarPaciente(paciente: Persona){
-    this.paciente = paciente
-    this.paciente.fullName = paciente.nombre + " " + paciente.apellido;
-  }
   getCategorias() {
     this.serviceCategoria.getCategorias().subscribe((data: any) => {
       this.categorias = data.lista;

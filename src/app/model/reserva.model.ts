@@ -10,6 +10,7 @@ export class Reserva {
     flagEstado!: string;
     flagAsistio!: string;
     observacion!: string;
+    editFieldName: boolean= false;
 }
 
 export class ReservaPostBody {

@@ -1,4 +1,3 @@
-<p>nuevaficha works!</p>
 <div class="modal-dialog modal-xl">
   <div class="modal-content">
     <div class="modal-header">
@@ -10,25 +9,25 @@
               <div class="form-group col-6" >
                   <label for="doctor">Doctor</label>
                   <div class="input-group">
-                    <select class="form-control" id="doctor" name="doctor" [(ngModel)]="personaSeleccionada1">
-                        <option value="">Selecciona un Doctor</option>
-                        <ng-container *ngFor="let persona of personas">
-                            <option [value]="persona.idPersona" *ngIf="persona.flag_es_doctor">
-                              {{ persona.nombre }} {{ persona.apellido }}
-                            </option>
-                          </ng-container>
+                    <select class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor">
+                      <option selected disabled="true">Selecciona un Doctor</option>
+                      <ng-container *ngFor="let persona of personas">
+                          <option [ngValue]="persona" *ngIf="persona.flag_es_doctor">
+                            {{ persona.nombre }} {{ persona.apellido }}
+                          </option>
+                        </ng-container>
                     </select>
                   </div>
               </div>
               <div class="form-group col-6">
                   <label for="paciente">Paciente</label>
                   <div class="input-group">
-                    <select class="form-control" id="paciente" name="paciente" [(ngModel)]="personaSeleccionada2">
-                        <option value="">Selecciona un Paciente</option>
-                        <ng-container *ngFor="let persona of personas">
-                            <option [value]="persona.idPersona" *ngIf="!persona.flag_es_doctor">
-                              {{ persona.nombre }} {{ persona.apellido }}
-                            </option>
+                    <select class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente">
+                      <option selected disabled="true">Selecciona un Paciente</option>
+                      <ng-container *ngFor="let persona of personas">
+                          <option [ngValue]="persona" *ngIf="!persona.flag_es_doctor">
+                            {{ persona.nombre }} {{ persona.apellido }}
+                          </option>
                         </ng-container>
                     </select>
                   </div>
@@ -37,7 +36,7 @@
           <div class="row">
               <div class="form-group col-6">
                   <label for="categoria">Categoria</label>
-                  <select class="form-control" id="categoria" name="categoria" [(ngModel)]="personaSeleccionada2">
+                  <select class="form-control" id="categoria" name="categoria" [(ngModel)]="categoria">
                     <option value="">Selecciona una Categoria</option>
                     <ng-container *ngFor="let categoria of categorias">
                         <option > {{ categoria.descripcion }} </option>
@@ -45,25 +44,36 @@
                 </select>
               </div>
           </div>
+          <div class="form-group col-6" >
+            <label for="doctor">Fecha</label>
+            <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd"
+                       name="dp" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="fecha"
+                       (ngModelChange)="onDateChange()">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-info" (click)="d.toggle()" type="button">Elegir fecha</button>
+                </div>
+              </div>
+        </div>
           <div class="row">
               <div class="form-group col-6">
                   <label for="motivoConsulta">Motivo de Consulta</label>
-                  <textarea type="text" class="form-control" id="motivoConsulta" name="motivoConsulta" [(ngModel)]="ficha.motivoConsulta"></textarea>
+                  <textarea type="text" class="form-control" id="motivoConsulta" name="motivoConsulta" [(ngModel)]="nuevaFicha.motivoConsulta"></textarea>
               </div>
               <div class="form-group  col-6">
                   <label for="diagnostico">Diagnostico</label>
-                  <textarea type="textArea" class="form-control" id="diagnostico" name="diagnostico" [(ngModel)]="ficha.diagnostico"></textarea>
+                  <textarea type="textArea" class="form-control" id="diagnostico" name="diagnostico" [(ngModel)]="nuevaFicha.diagnostico"></textarea>
               </div>
-              </div>
+            </div>
           <div class="form-group">
               <label for= "observacion">Observaciones</label>
-              <textarea type="text" class="form-control" id="observacion" name="observacion" [(ngModel)]="ficha.observacion"></textarea>
+              <textarea type="text" class="form-control" id="observacion" name="observacion" [(ngModel)]="nuevaFicha.observacion"></textarea>
           </div>
       </form>
       </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" routerLink="/ficha">Volver</button>
-      <button type="button" class="btn btn-primary" (click)="guardarFicha()">Guardar</button>
+      <button type="button" class="btn btn-primary" (click)="agregarFicha()">Guardar</button>
   </div>
   </div>
 </div>

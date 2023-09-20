@@ -77,8 +77,8 @@
           <td>{{reserva.idDoctor.nombre + " " + reserva.idDoctor.apellido }}</td>
           <td>{{reserva.idPaciente.nombre + " " + reserva.idPaciente.apellido }}</td>
           <td>
-              <button class="btn btn-outline-danger mx-2" (click)="cancelarReserva(reserva)">Cancelar</button>
-              <button class="btn btn-outline-success mx-2" [routerLink]="[reserva.idReserva, 'editar']">Modificar</button>
+            <button class="btn btn-outline-success mx-2" [routerLink]="[reserva.idReserva, 'editar']">Editar</button>
+            <button class="btn btn-outline-danger mx-2" (click)="cancelarReserva(reserva)">Cancelar</button>
           </td>
           </tr>
       </tbody>

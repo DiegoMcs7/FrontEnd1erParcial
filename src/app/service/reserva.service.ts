@@ -9,8 +9,6 @@ import { Persona } from '../model/paciente_doctor.model';
   providedIn: 'root'
 })
 export class ReservaService {
-  doctor: Persona = new Persona();
-  paciente: Persona = new Persona();
   api = base_url;
 
   constructor(private angularFirestore: AngularFirestore,private http: HttpClient) { }
@@ -65,6 +63,35 @@ export class ReservaService {
       })
       .catch(error => {
         console.error(`Error al cancelar la reserva con ID ${idReserva}:`, error);
+      });
+  }
+
+  editarReserva(idReserva: number, nuevaReserva: Reserva) {
+    return this.angularFirestore
+      .collection("reserva-collection", ref => ref.where("idReserva", "==", idReserva))
+      .get()
+      .toPromise()
+      .then(querySnapshot => {
+        if (querySnapshot) {
+          const reservaDoc = querySnapshot.docs[0];
+          if (reservaDoc) {
+            return reservaDoc.ref.update({
+              idDoctor: JSON.parse(JSON.stringify(nuevaReserva.idDoctor)),
+              idPaciente: JSON.parse(JSON.stringify(nuevaReserva.idPaciente)),
+              fecha: nuevaReserva.fecha,
+              horaInicio: nuevaReserva.horaInicio,
+              horaFin: nuevaReserva.horaFin,
+              observacion: nuevaReserva.observacion
+            });
+          } else {
+            throw new Error("El documento de reserva no está definido");
+          }
+        } else {
+          throw new Error(`No se encontró ninguna reserva con el nombre `);
+        }
+      })
+      .catch(error => {
+        console.error('Error al editar reserva por nombre:', error);
       });
   }
 

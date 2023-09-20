@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-xl">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title" id="staticBackdropLabel">Agregar Ficha</h5>
+      <h5 class="modal-title" id="staticBackdropLabel">Editar Reserva</h5>
     </div>
     <div class="modal-body">
       <form>
@@ -9,37 +9,53 @@
               <div class="form-group col-6" >
                   <label for="doctor">Doctor</label>
                   <div class="input-group">
-                      <input type="text" class="form-control" id="doctor" name="doctor" readonly
-                      [value]="reserva.idDoctor.nombre + ' ' + reserva.idDoctor.apellido" >
+                    <select class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor">
+                      <option selected disabled="true">Selecciona un Doctor</option>
+                      <ng-container *ngFor="let persona of personas">
+                        <option [ngValue]="persona" *ngIf="persona.flag_es_doctor" [attr.selected]="reserva.idDoctor.idPersona">
+                            {{ persona.nombre }} {{ persona.apellido }}
+                        </option>
+                      </ng-container>
+                    </select>
                   </div>
               </div>
               <div class="form-group col-6" >
                   <label for="doctor">Fecha</label>
                   <div class="input-group">
-                      <input readonly class="form-control" placeholder="yyyy-mm-dd"
-                             name="dp" ngbDatepicker #d="ngbDatepicker" [ngModel]="fecha" />
+                    <input class="form-control" placeholder="yyyy-mm-dd"
+                           name="dp" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="fecha"
+                           (ngModelChange)="onDateChange()">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-info" (click)="d.toggle()" type="button">Elegir fecha</button>
                     </div>
+                  </div>
               </div>
           </div>
           <div class="row mt-3">
               <div class="form-group col-6">
                   <label for="paciente">Paciente</label>
                   <div class="input-group">
-                      <input readonly type="text" class="form-control" id="paciente" readonly name="paciente"
-                      [value]="reserva.idPaciente.nombre + ' ' + reserva.idPaciente.apellido" />
+                    <select class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente">
+                      <option selected disabled="true">Selecciona un Paciente</option>
+                      <ng-container *ngFor="let persona of personas">
+                          <option [ngValue]="persona" *ngIf="!persona.flag_es_doctor">
+                            {{ persona.nombre }} {{ persona.apellido }}
+                          </option>
+                        </ng-container>
+                  </select>
                   </div>
               </div>
               <div class="form-group col-3" >
                   <label for="doctor">Hora de inicio</label>
                   <div class="input-group">
-                      <input type="number" class="form-control" name="inicio-hora" placeholder="HH" [(ngModel)]="horaInicio.hora">
-                    </div>
+                    <input min="9" max="20" type="number" class="form-control" name="inicio-hora" placeholder="HH" [(ngModel)]="horaInicio.hora" (change)="cambioInicio()">
+                  </div>
               </div>
               <div class="col-3">
                   <label for="doctor">Hora de fin</label>
                   <div class="input-group">
-                      <input type="number" class="form-control" name="fin-hora" placeholder="HH" [(ngModel)]="horaFin.hora">
-                    </div>
+                    <input min="10" max="21" type="number" class="form-control" name="fin-hora" placeholder="HH" [(ngModel)]="horaFin.hora" (change)="cambioFin()">
+                  </div>
               </div>
           </div>
           <div class="row mt-3">
@@ -63,8 +79,8 @@
       </form>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
-          <button type="button" class="btn btn-primary" (click)="modificarReserva()">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" routerLink="/reservas">Volver</button>
+          <button type="button" class="btn btn-primary" (click)="guardarEdicionCambios(reserva)">Guardar</button>
       </div>
   </div>
 </div>

@@ -1,5 +1,5 @@
 import { Persona } from '../model/paciente_doctor.model';
-
+import { Categoria } from '../model/categoria.model';
 export class Ficha{
     idFichaClinica!: number;
     fechaHora!: string;
@@ -8,5 +8,6 @@ export class Ficha{
     diagnostico!:string;
     idDoctor!: Persona;
     idPaciente!: Persona;
+    idCategoria!: Categoria;
 
 }
