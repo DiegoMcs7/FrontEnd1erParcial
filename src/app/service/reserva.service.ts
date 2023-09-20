@@ -36,6 +36,7 @@ export class ReservaService {
         fecha: nuevaReserva.fecha,
         horaInicio: nuevaReserva.horaInicio,
         horaFin: nuevaReserva.horaFin,
+        flagEstado: nuevaReserva.flagEstado,
       };
 
 
@@ -52,12 +53,31 @@ export class ReservaService {
 
   }
 
-  cancelarReserva(idReserva: string) {
-    // Supongamos que tienes una reserva con ID 'idDeLaReserva'
-    const reservaRef = this.angularFirestore.collection('reserva-collection').doc('idReserva');
+  cancelarReserva(nuevaReserva: Reserva) {
+    const idReserva = nuevaReserva.idReserva; // Obtén el ID de la reserva de nuevaReserva
+    if (!idReserva) {
+      console.error('El objeto nuevaReserva no tiene un ID válido.');
+      return;
+    }
 
-    // Actualiza el estado de la reserva a "cancelada"
-    reservaRef.update({ flagEstado: 'cancelada' })
+    const reservaRef = this.angularFirestore.collection('reserva-collection', ref => ref.where("idReserva", "==", idReserva));
+
+    // Obtener la reserva y actualizar su estado a "cancelada"
+    reservaRef.get().toPromise()
+      .then(querySnapshot => {
+        if (querySnapshot) {
+          const reservaDoc = querySnapshot.docs[0];
+          if (reservaDoc) {
+            return reservaDoc.ref.update({ flagEstado: 'Cancelada' });
+          } else {
+            console.error(`No se encontró ninguna reserva con el ID ${idReserva}.`);
+            throw new Error(`No se encontró ninguna reserva con el ID ${idReserva}.`);
+          }
+        } else {
+          console.error(`No se encontró ninguna reserva con el ID ${idReserva}.`);
+          throw new Error(`No se encontró ninguna reserva con el ID ${idReserva}.`);
+        }
+      })
       .then(() => {
         console.log(`Reserva con ID ${idReserva} cancelada.`);
       })

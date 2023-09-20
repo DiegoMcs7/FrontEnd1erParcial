@@ -23,7 +23,7 @@ class Fecha {
   styleUrls: ['./reservas.component.css']
 })
 export class ReservaComponent implements OnInit {
-  public columns = ["Fecha","Hora inicio","Hora fin","Doctor","Paciente"];
+  public columns = ["Fecha","Hora inicio","Hora fin","Doctor","Paciente", "Acciones"];
   public data: Reserva[] = [];
   reservas: Reserva[] = [];
   personas: Persona[] = [];
@@ -73,10 +73,8 @@ export class ReservaComponent implements OnInit {
   }
 
   cancelarReserva(reserva: Reserva) {
-    // Convierte el ID de la reserva a una cadena
-    const idReservaString = reserva.idReserva.toString();
-    // Llama al servicio para actualizar el estado de la reserva
-    this.reservaService.cancelarReserva(idReservaString)
+
+    this.reservaService.cancelarReserva(reserva)
 
   }
 
