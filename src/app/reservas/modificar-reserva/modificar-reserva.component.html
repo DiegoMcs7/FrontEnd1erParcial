@@ -12,7 +12,7 @@
                     <select class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor">
                       <option selected disabled="true">Selecciona un Doctor</option>
                       <ng-container *ngFor="let persona of personas">
-                        <option [ngValue]="persona" *ngIf="persona.flag_es_doctor" [attr.selected]="reserva.idDoctor.idPersona">
+                        <option [ngValue]="persona" *ngIf="persona.flag_es_doctor" [attr.selected]="persona.idPersona === this.reserva.idDoctor.idPersona">
                             {{ persona.nombre }} {{ persona.apellido }}
                         </option>
                       </ng-container>

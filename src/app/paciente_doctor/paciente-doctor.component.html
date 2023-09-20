@@ -15,7 +15,7 @@
     <button class="btn btn-primary mt-2 mb-4" (click)="agregarPersona()">Agregar Persona</button>
   </div>
 
-  <div class="table-responsive"> 
+  <div class="table-responsive">
   <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered collapsed">
     <thead>
       <tr>
@@ -61,16 +61,5 @@
     </tbody>
   </table>
   </div>
-  <!-- <form (submit)="filterById()">
-    <label>
-      Min
-      <input type="number" name="min" id="min" [(ngModel)]="min" />
-    </label>
-    <label>
-      Max
-      <input type="number" name="max" id="max" [(ngModel)]="max" />
-    </label>
-    <button class="btn btn-primary" type="submit">Filtrar por ID</button>
-  </form> -->
   <br />
 </div>

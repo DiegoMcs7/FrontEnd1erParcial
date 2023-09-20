@@ -46,10 +46,10 @@ export class PersonaService {
         .collection("persona-collection")
         .add(personaData)
         .then(response => {
-          console.log(response);
+          console.log(`Persona con ID ${response.id} agregada con éxito.`);
         })
         .catch(error => {
-          console.error(error);
+          console.error('Error al agregar la persona:', error);
         });
   }
 

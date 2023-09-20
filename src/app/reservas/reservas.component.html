@@ -79,6 +79,8 @@
           <td>
             <button class="btn btn-outline-success mx-2" [routerLink]="[reserva.idReserva, 'editar']">Editar</button>
             <button class="btn btn-outline-danger mx-2" (click)="cancelarReserva(reserva)" *ngIf="reserva.flagEstado === 'Activo' ">Cancelar</button>
+            <button type="button" class="btn btn-primary" routerLink="/ficha/nuevo">Nueva Ficha</button>
+
           </td>
           </tr>
       </tbody>

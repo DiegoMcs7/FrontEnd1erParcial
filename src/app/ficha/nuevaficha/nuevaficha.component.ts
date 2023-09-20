@@ -48,6 +48,7 @@ export class NuevafichaComponent implements OnInit {
     this.fichas = [];
     this.serviceFicha.getFichas().subscribe((fichas: Ficha[]) => {
       this.fichas = fichas;
+      this.max_id= this.fichas.length;
     });
   }
 

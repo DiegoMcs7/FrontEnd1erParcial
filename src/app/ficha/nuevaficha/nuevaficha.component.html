@@ -39,7 +39,7 @@
                   <select class="form-control" id="categoria" name="categoria" [(ngModel)]="categoria">
                     <option value="">Selecciona una Categoria</option>
                     <ng-container *ngFor="let categoria of categorias">
-                        <option > {{ categoria.descripcion }} </option>
+                        <option [ngValue]="categoria"> {{ categoria.descripcion }} </option>
                     </ng-container>
                 </select>
               </div>

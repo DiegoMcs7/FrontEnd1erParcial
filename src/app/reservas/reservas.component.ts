@@ -95,14 +95,4 @@ export class ReservaComponent implements OnInit {
     }
   }
 
-  seleccionarDoctor(doctor: Persona){
-    this.doctor = doctor
-    this.doctor.fullName = doctor.nombre + " " + doctor.apellido;
-  }
-
-  seleccionarPaciente(paciente: Persona){
-    this.paciente = paciente
-    this.paciente.fullName = paciente.nombre + " " + paciente.apellido;
-  }
-
 }

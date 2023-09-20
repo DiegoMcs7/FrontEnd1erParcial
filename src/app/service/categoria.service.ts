@@ -26,20 +26,19 @@ export class CategoriaService {
   }
 
   agregarCategoria(nuevaCategoria: Categoria) {
-    this.getCategorias().subscribe(categorias => {
-      // Encontrar el ID más alto entre las personas existentes o establecerlo en 0 si no hay registros
-      const maxId = categorias.length === 0 ? 0 : Math.max(...categorias.map(categoria => categoria.idCategoria));
-
-      // Asignar el próximo ID basado en el máximo encontrado
-      nuevaCategoria.idCategoria = maxId + 1;
-    });
     const categoriaData = {
       idCategoria: nuevaCategoria.idCategoria,
       descripcion: nuevaCategoria.descripcion
     };
-    return this.angularFirestore
+    this.angularFirestore
     .collection('categoria-collection')
-    .add(categoriaData);
+    .add(categoriaData)
+    .then(response => {
+      console.log(`Categoria con ID ${response.id} agregada con éxito.`);
+    })
+    .catch(error => {
+      console.error('Error al agregar la categoria:', error);
+    });
   }
 
   editarCategoria(idCategoria: number, nuevaCategoria: Categoria) {

@@ -14,6 +14,7 @@ export class CategoriasComponent implements OnInit {
   categoriaEditada: Categoria = new Categoria();
   edit_id: number = 0; // Campo edit_id como variable local
   editMode = false; // Modo de edición
+  max_id: number = 0;
   constructor(private categoriaService: CategoriaService) {}
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective | undefined;
@@ -51,21 +52,24 @@ export class CategoriasComponent implements OnInit {
   }
 
   cargarCategorias(): void {
-    this.categorias = [];
     this.categoriaService.getCategorias().subscribe((categorias: Categoria[]) => {
       this.categorias = categorias;
+      this.max_id= this.categorias.length;
       this.rerender();
     });
   }
 
   agregarCategoria(): void {
-    if (
-      this.nuevaCategoria.descripcion
-    ) {
-      this.categoriaService.agregarCategoria(this.nuevaCategoria);
-      this.nuevaCategoria = new Categoria(); // Limpia el input
-      this.cargarCategorias(); // Recarga la lista de categorías
-      this.rerender();
+    this.max_id= this.max_id + 1;
+    this.nuevaCategoria.idCategoria = this.max_id;
+
+    if (this.nuevaCategoria.descripcion ) {
+      this.categoriaService.agregarCategoria(this.nuevaCategoria)
+        console.log('Categoria agregada con éxito.');
+        this.nuevaCategoria = new Categoria();
+        this.cargarCategorias();
+    } else {
+      console.error('Error al crear categoria');
     }
   }
 
