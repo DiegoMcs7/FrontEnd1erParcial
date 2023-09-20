@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'reservas', component: ReservaComponent },
   { path: "reservas/nuevo", component: NuevaReservaComponent },
   { path: "reservas/:id/editar", component: ModificarReservaComponent },
-  { path: "ficha/:id/editar", component: ModificarfichaComponent },
+  { path: "reservas/:id/ficha", component: ModificarfichaComponent },
   { path: "ficha/nuevo",  component: NuevafichaComponent },
   { path: "ficha", component: FichaComponent  },
 ];

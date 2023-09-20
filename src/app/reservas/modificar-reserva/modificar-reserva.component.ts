@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Reserva, ReservaPutBody } from '../../model/reserva.model';
+import { Reserva, ReservaPutBody} from '../../model/reserva.model';
 import { ReservaService } from '../../service/reserva.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { Persona } from '../../model/paciente_doctor.model';
+
 import { PersonaService } from 'src/app/service/paciente_doctor.service';
 class Hora {
   hora!: number;
@@ -33,6 +34,7 @@ export class ModificarReservaComponent implements  OnInit  {
   reservas: Reserva[] = []
   personas: Persona[] = [];
   reserva: Reserva = new Reserva();
+  reserva1: Reserva | undefined
   fecha: Fecha = new Fecha();
   horaInicio: Hora = new Hora();
   horaFin: Hora = new Hora();
@@ -40,12 +42,13 @@ export class ModificarReservaComponent implements  OnInit  {
   doctor: Persona = new Persona();
   paciente: Persona = new Persona();
   nuevaPersona: Persona = new Persona();
+  persona1: Persona = new Persona();
+  persona2: Persona = new Persona();
   edit_id: number = 0; // Campo edit_id como variable local
 
-  constructor(private reservaService: ReservaService, private personaService: PersonaService) { }
+  constructor(private reservaService: ReservaService, private personaService: PersonaService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-
     this.cargarPersonas();
     this.cargarReservas();
   }
@@ -57,7 +60,30 @@ export class ModificarReservaComponent implements  OnInit  {
   cargarReservas(): void {
     this.reservaService.getReservas().subscribe((reservas: Reserva[]) => {
       this.reservas = reservas;
-      this.cargarReservas();
+      const routeParams = this.route.snapshot.paramMap;
+      const reservaIdFromRoute = Number(routeParams.get('id'));
+      console.log(reservaIdFromRoute);
+      this.reserva1 = this.reservas.find((reserva2) => reservaIdFromRoute === reserva2.idReserva);
+      console.log(this.reserva1);
+      if (this.reserva1) {
+        this.reserva = this.reserva1;
+      }
+      const hora_inicio = this.reserva.horaInicio.split(":");
+      const hora_final = this.reserva.horaFin.split(":");
+      const fecha = this.reserva.fecha.split("/");
+
+      this.horaInicio.hora = +hora_inicio[0];
+      this.horaInicio.minuto = +hora_inicio[1];
+
+      this.horaFin.hora = +hora_final[0];
+      this.horaFin.minuto = +hora_final[1];
+
+      this.fecha.year = parseInt(fecha[0]);
+      this.fecha.month = parseInt(fecha[1]);
+      this.fecha.day = parseInt(fecha[2]);
+
+      this.persona1 = this.reserva.idDoctor
+      this.persona2 = this.reserva.idPaciente
     });
   }
 

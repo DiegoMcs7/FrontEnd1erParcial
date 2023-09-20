@@ -116,7 +116,10 @@ export class ReservaService {
   }
 
   modificarReserva(reserva: ReservaPutBody): Observable<void> {
-    return this.http.put<void>(`${this.api}stock-pwfe/reserva`, reserva);
+    return this.http.put<void>(`${this.api}/reserva`, reserva);
+  }
+  getReserva(idReserva: number):Observable<Reserva>{
+    return this.http.get<Reserva>(this.api + '/' + 'reserva/' + idReserva,);
   }
 
 }

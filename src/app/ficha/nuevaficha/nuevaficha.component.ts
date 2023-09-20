@@ -4,7 +4,8 @@ import { Ficha } from '../../model/fichas';
 import { Persona } from '../../model/paciente_doctor.model';
 import { CategoriaService } from '../../service/categoria.service';
 import { ServicefichaService } from '../../service/serviceficha.service';
-import { PersonaService } from '../../service/paciente_doctor.service'
+import { PersonaService } from '../../service/paciente_doctor.service';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
 class Fecha {
@@ -28,6 +29,7 @@ export class NuevafichaComponent implements OnInit {
   nuevaFicha: Ficha = new Ficha();
   fichas: Ficha[] = [];
   ficha: Ficha = new Ficha();
+  ficha1: Ficha | undefined;
   doctor: Persona = new Persona();
   paciente: Persona = new Persona();
   categorias: Categoria[] = []
@@ -36,7 +38,7 @@ export class NuevafichaComponent implements OnInit {
   max_id: number = 0;
   fecha: Fecha = new Fecha();
 
-  constructor(private categoriaService: CategoriaService, private serviceFicha: ServicefichaService, private personaService: PersonaService) { }
+  constructor(private categoriaService: CategoriaService, private serviceFicha: ServicefichaService, private personaService: PersonaService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getCategorias()

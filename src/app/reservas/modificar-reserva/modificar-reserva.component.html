@@ -12,7 +12,7 @@
                     <select class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor">
                       <option selected disabled="true">Selecciona un Doctor</option>
                       <ng-container *ngFor="let persona of personas">
-                        <option [ngValue]="persona" *ngIf="persona.flag_es_doctor" [attr.selected]="persona.idPersona === this.reserva.idDoctor.idPersona">
+                        <option [ngValue]="persona" *ngIf="persona.flag_es_doctor && reserva.idDoctor.idPersona == persona.idPersona" [attr.selected]="reserva.idDoctor.idPersona">
                             {{ persona.nombre }} {{ persona.apellido }}
                         </option>
                       </ng-container>
@@ -22,7 +22,7 @@
               <div class="form-group col-6" >
                   <label for="doctor">Fecha</label>
                   <div class="input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd"
+                    <input class="form-control"
                            name="dp" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="fecha"
                            (ngModelChange)="onDateChange()">
                     <div class="input-group-append">
@@ -38,7 +38,7 @@
                     <select class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente">
                       <option selected disabled="true">Selecciona un Paciente</option>
                       <ng-container *ngFor="let persona of personas">
-                          <option [ngValue]="persona" *ngIf="!persona.flag_es_doctor">
+                          <option [ngValue]="persona" *ngIf="!persona.flag_es_doctor && reserva.idPaciente.idPersona == persona.idPersona" [attr.selected]="reserva.idPaciente.idPersona">
                             {{ persona.nombre }} {{ persona.apellido }}
                           </option>
                         </ng-container>
@@ -48,13 +48,13 @@
               <div class="form-group col-3" >
                   <label for="doctor">Hora de inicio</label>
                   <div class="input-group">
-                    <input min="9" max="20" type="number" class="form-control" name="inicio-hora" placeholder="HH" [(ngModel)]="horaInicio.hora" (change)="cambioInicio()">
+                    <input min="9" max="20" type="number" class="form-control" name="inicio-hora" [(ngModel)]="horaInicio.hora" (change)="cambioInicio()">
                   </div>
               </div>
               <div class="col-3">
                   <label for="doctor">Hora de fin</label>
                   <div class="input-group">
-                    <input min="10" max="21" type="number" class="form-control" name="fin-hora" placeholder="HH" [(ngModel)]="horaFin.hora" (change)="cambioFin()">
+                    <input min="10" max="21" type="number" class="form-control" name="fin-hora" [(ngModel)]="horaFin.hora" (change)="cambioFin()">
                   </div>
               </div>
           </div>
