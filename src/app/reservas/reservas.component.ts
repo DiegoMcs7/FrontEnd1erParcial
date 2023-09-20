@@ -45,17 +45,19 @@ export class ReservaComponent implements OnInit {
     this.cargarReservas();
   }
 
-  onDateChange() {
+  onDateChange1() {
     this.date_inicio.setDate(this.fecha_inicio.day);
-    this.date_inicio.setMonth(this.fecha_inicio.month);
+    this.date_inicio.setMonth(this.fecha_inicio.month-1);
     this.date_inicio.setFullYear(this.fecha_inicio.year);
-    this.date_inicio.setHours(0,0,0,0);
-    this.date_fin.setDate(this.fecha_fin.day);
-    this.date_fin.setMonth(this.fecha_fin.month);
-    this.date_fin.setFullYear(this.fecha_fin.year);
-    this.date_fin.setHours(0,0,0,0);
+
   }
 
+  onDateChange2() {
+    this.date_fin.setDate(this.fecha_fin.day);
+    this.date_fin.setMonth(this.fecha_fin.month-1);
+    this.date_fin.setFullYear(this.fecha_fin.year);
+
+  }
   cargarPersonas(): void {
     this.personaService.getPersonas().subscribe((data: Persona[]) => {
       this.personas = data;
@@ -66,9 +68,9 @@ export class ReservaComponent implements OnInit {
     this.reservaService.getReservas().subscribe((reservas: Reserva[]) => {
       this.reservas = reservas;
       const now = new Date();
-      this.reservas_filtradas = reservas.filter((reserva) => parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getFullYear === now.getFullYear &&
-      parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getMonth === now.getMonth &&
-      parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getDate === now.getDate)
+      this.reservas_filtradas = reservas.filter((reserva) => parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getFullYear() === now.getFullYear() &&
+      parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getMonth() === now.getMonth() &&
+      parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getDate() === now.getDate())
     });
   }
 
@@ -79,19 +81,17 @@ export class ReservaComponent implements OnInit {
   }
 
   busquedaFiltrada(){
+    this.reservas_filtradas = []
     if (this.personaSeleccionada1 && this.personaSeleccionada2) {
 
       this.reservas_filtradas = this.reservas.filter((reserva) => (reserva.idDoctor.idPersona === this.personaSeleccionada1.idPersona &&
         reserva.idPaciente.idPersona === this.personaSeleccionada2.idPersona &&
-        //fecha inicio
-        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getDate >= this.date_inicio.getDate &&
-        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getMonth >= this.date_inicio.getMonth &&
-        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getFullYear >= this.date_inicio.getFullYear &&
-        //fecha fin
-        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getDate <= this.date_fin.getDate &&
-        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getMonth <= this.date_fin.getMonth &&
-        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getFullYear <= this.date_fin.getFullYear))
-
+        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getDate() >= this.date_inicio.getDate() &&
+        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getMonth() >= this.date_inicio.getMonth() &&
+        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getFullYear() >= this.date_inicio.getFullYear() &&
+        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getDate() <= this.date_fin.getDate() &&
+        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getMonth() <= this.date_fin.getMonth() &&
+        parse(reserva.fecha, 'yyyy/MM/dd', new Date()).getFullYear() <= this.date_fin.getFullYear()));
     }
   }
 
