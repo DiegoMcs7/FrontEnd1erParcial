@@ -29,7 +29,7 @@ export class NuevaReservaComponent implements OnInit {
   public hola: Persona[] = [];
   personas: Persona[] = [];
 
-  public columns = ["Fecha","Hora inicio","Hora fin","Doctor","Paciente","Acciones"];
+  public columns = ["Fecha","Hora inicio","Hora fin","Doctor","Paciente"];
   nuevaReserva: Reserva = new Reserva();
   reservas: Reserva[] = []
   reserva: Reserva = new Reserva();

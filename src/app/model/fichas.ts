@@ -9,5 +9,5 @@ export class Ficha{
     idDoctor!: Persona;
     idPaciente!: Persona;
     idCategoria!: Categoria;
-
+    editFieldName: boolean= false;
 }

@@ -4,7 +4,7 @@ import { PersonaService } from '../service/paciente_doctor.service'
 import { Reserva } from '../model/reserva.model';
 import { ReservaService } from '../service/reserva.service';
 import { parse } from 'date-fns';
-
+import { ToastrService } from 'ngx-toastr';
 class Fecha {
   year: number;
   month: number;
@@ -38,7 +38,7 @@ export class ReservaComponent implements OnInit {
   doctor: Persona = new Persona();
   reservas_filtradas: Reserva[] = [];
   paciente: Persona = new Persona();
-  constructor(private reservaService: ReservaService, private personaService: PersonaService) {}
+  constructor(private reservaService: ReservaService, private personaService: PersonaService,private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.cargarPersonas();
@@ -76,6 +76,7 @@ export class ReservaComponent implements OnInit {
 
   cancelarReserva(reserva: Reserva) {
 
+    this.toastr.success('Se canceló una reserva');
     this.reservaService.cancelarReserva(reserva)
 
   }

@@ -8,7 +8,7 @@ export class Reserva {
     idDoctor!: Persona;
     idPaciente!: Persona;
     flagEstado: string = 'Activo';
-    flagAsistio!: string;
+    flagAsistio: boolean= false;
     observacion!: string;
     editFieldName: boolean= false;
 }

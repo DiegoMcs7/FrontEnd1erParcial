@@ -26,6 +26,7 @@ import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
 import { environment } from 'src/environments/environment';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EditarfichaComponent } from './ficha/editarficha/editarficha.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +38,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NavbarComponent,
     FichaComponent,
     NuevafichaComponent,
-    ModificarfichaComponent
+    ModificarfichaComponent,
+    EditarfichaComponent
   ],
   imports: [
     BrowserModule,

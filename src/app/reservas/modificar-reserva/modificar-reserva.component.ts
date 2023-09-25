@@ -5,7 +5,7 @@ import { ReservaService } from '../../service/reserva.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { Persona } from '../../model/paciente_doctor.model';
-
+import { ToastrService } from 'ngx-toastr';
 import { PersonaService } from 'src/app/service/paciente_doctor.service';
 class Hora {
   hora!: number;
@@ -46,7 +46,7 @@ export class ModificarReservaComponent implements  OnInit  {
   persona2: Persona = new Persona();
   edit_id: number = 0; // Campo edit_id como variable local
 
-  constructor(private reservaService: ReservaService, private personaService: PersonaService, private route: ActivatedRoute) { }
+  constructor(private reservaService: ReservaService, private personaService: PersonaService, private route: ActivatedRoute,private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.cargarPersonas();
@@ -88,7 +88,7 @@ export class ModificarReservaComponent implements  OnInit  {
   }
 
   toggleFlag() {
-    this.flagAsistio = !this.flagAsistio;
+    this.reserva.flagAsistio = !this.reserva.flagAsistio;
   }
 
   editarReserva(reserva: Reserva): void {
@@ -107,7 +107,8 @@ export class ModificarReservaComponent implements  OnInit  {
       const doctor_edit = personas.find(persona => persona.idPersona === reserva.idDoctor?.idPersona);
       const paciente_edit = personas.find(persona => persona.idPersona === reserva.idPaciente?.idPersona);
       if (doctor_edit && paciente_edit) {
-        this.reservaService.editarReserva(reserva.idReserva, reserva, doctor_edit, paciente_edit, fechaStr, horaInicioStr, horaFinStr);
+        this.reservaService.editarReserva(reserva.idReserva, reserva, doctor_edit, paciente_edit, fechaStr,horaFinStr,horaInicioStr);
+        this.toastr.success('Se editó una reserva');
         reserva.editFieldName = true;
       } else {
         console.log('No se encontró un doctor o paciente válido.');

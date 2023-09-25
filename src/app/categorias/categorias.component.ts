@@ -48,7 +48,9 @@ export class CategoriasComponent implements OnInit {
   rerender(): void {
     this.dtElement?.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
-      this.dtTrigger.next(this.dtOptions);
+      if(this.dtOptions != null){
+        this.dtTrigger.next(this.dtOptions);
+      }
     });
   }
 
@@ -69,10 +71,8 @@ export class CategoriasComponent implements OnInit {
         console.log('Categoria agregada con éxito.');
         this.toastr.success('Se agregó una categoria');
         this.nuevaCategoria = new Categoria();
-        this.cargarCategorias();
-    } else {
-      console.error('Error al crear categoria');
     }
+
   }
 
   editarCategoria(categoria: Categoria): void {
@@ -86,6 +86,7 @@ export class CategoriasComponent implements OnInit {
   guardarEdicionCambios(categoria: Categoria): void {
     console.log(this.edit_id);
     this.categoriaService.editarCategoria(this.edit_id, categoria);
+    this.toastr.success('Se editó una categoria');
     categoria.editFieldName=true;
     this.editMode = true;
     this.rerender();
@@ -98,6 +99,7 @@ export class CategoriasComponent implements OnInit {
 
   eliminarCategoria(categoria: Categoria): void {
     this.categoriaService.eliminarCategoria(categoria.idCategoria);
+    this.toastr.success('Se eliminó una categoria');
     this.rerender();
   }
 

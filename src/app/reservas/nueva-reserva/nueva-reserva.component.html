@@ -78,10 +78,6 @@
                   <td>{{group.horaFin}}</td>
                   <td>{{group.idDoctor.nombre + " " + group.idDoctor.apellido }}</td>
                   <td>{{group.idPaciente.nombre + " " + group.idPaciente.apellido }}</td>
-                  <td>
-                    <button class="btn btn-outline-success mx-2" [routerLink]="[reserva.idReserva, 'editar']">Editar</button>
-                    <!-- <button class="btn btn-outline-danger mx-2" (click)="cancelarReserva(reserva)">Cancelar</button> -->
-                  </td>
                   </tr>
               </tbody>
           </table>

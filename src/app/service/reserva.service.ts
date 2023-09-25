@@ -119,6 +119,9 @@ export class ReservaService {
           if (nuevaReserva.observacion) {
             updateData.observacion = nuevaReserva.observacion;
           }
+          if (nuevaReserva.flagAsistio) {
+            updateData.flagAsistio = nuevaReserva.flagAsistio;
+          }
           return doc.ref.update(updateData);
         }else {
           console.log("No se encontró ninguna reserva con idReserva igual a 3");
@@ -128,13 +131,6 @@ export class ReservaService {
         console.error('Error al editar la reserva con idReserva 3:', error);
       });
 
-  }
-
-  modificarReserva(reserva: ReservaPutBody): Observable<void> {
-    return this.http.put<void>(`${this.api}/reserva`, reserva);
-  }
-  getReserva(idReserva: number):Observable<Reserva>{
-    return this.http.get<Reserva>(this.api + '/' + 'reserva/' + idReserva,);
   }
 
 }

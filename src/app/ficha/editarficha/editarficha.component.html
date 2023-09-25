@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-xl">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title" id="staticBackdropLabel">Agregar Ficha</h5>
+      <h5 class="modal-title" id="staticBackdropLabel">Editar Ficha</h5>
     </div>
     <div class="modal-body">
       <form>
@@ -9,7 +9,7 @@
               <div class="form-group col-6" >
                   <label for="doctor">Doctor</label>
                   <div class="input-group">
-                    <select class="form-control" id="doctor" name="doctor" [(ngModel)]="reserva.idDoctor.idPersona">
+                    <select class="form-control" id="doctor" name="doctor" [(ngModel)]="ficha.idDoctor.idPersona">
                       <option disabled selected>Selecciona un Doctor</option>
                       <ng-container *ngFor="let persona of personas">
                         <option *ngIf="persona.flag_es_doctor "[ngValue]="persona.idPersona">
@@ -22,7 +22,7 @@
               <div class="form-group col-6">
                   <label for="paciente">Paciente</label>
                   <div class="input-group">
-                    <select class="form-control" id="paciente" name="paciente" [(ngModel)]="reserva.idPaciente.idPersona">
+                    <select class="form-control" id="paciente" name="paciente" [(ngModel)]="ficha.idPaciente.idPersona">
                       <option disabled selected>Selecciona un Paciente</option>
                       <ng-container *ngFor="let persona of personas">
                         <option [ngValue]="persona.idPersona" *ngIf="!persona.flag_es_doctor" >
@@ -36,10 +36,10 @@
           <div class="row">
               <div class="form-group col-6">
                   <label for="categoria">Categoria</label>
-                  <select class="form-control" id="categoria" name="categoria" [(ngModel)]="categoria">
+                  <select class="form-control" id="categoria" name="categoria" [(ngModel)]="ficha.idCategoria.idCategoria">
                     <option disabled selected>Selecciona una Categoria</option>
                     <ng-container *ngFor="let categoria of categorias">
-                        <option [ngValue]="categoria"> {{ categoria.descripcion }} </option>
+                        <option [ngValue]="categoria.idCategoria"> {{ categoria.descripcion }} </option>
                     </ng-container>
                 </select>
               </div>
@@ -58,22 +58,22 @@
           <div class="row">
               <div class="form-group col-6">
                   <label for="motivoConsulta">Motivo de Consulta</label>
-                  <textarea type="text" class="form-control" id="motivoConsulta" name="motivoConsulta" [(ngModel)]="nuevaFicha.motivoConsulta"></textarea>
+                  <textarea type="text" class="form-control" id="motivoConsulta" name="motivoConsulta" [(ngModel)]="ficha.motivoConsulta"></textarea>
               </div>
               <div class="form-group  col-6">
                   <label for="diagnostico">Diagnostico</label>
-                  <textarea type="textArea" class="form-control" id="diagnostico" name="diagnostico" [(ngModel)]="nuevaFicha.diagnostico"></textarea>
+                  <textarea type="textArea" class="form-control" id="diagnostico" name="diagnostico" [(ngModel)]="ficha.diagnostico"></textarea>
               </div>
             </div>
           <div class="form-group">
               <label for= "observacion">Observaciones</label>
-              <textarea type="text" class="form-control" id="observacion" name="observacion" [(ngModel)]="nuevaFicha.observacion"></textarea>
+              <textarea type="text" class="form-control" id="observacion" name="observacion" [(ngModel)]="ficha.observacion"></textarea>
           </div>
       </form>
       </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" routerLink="/reservas">Volver</button>
-      <button type="button" class="btn btn-primary" (click)="agregarFicha()">Guardar</button>
+      <button type="button" class="btn btn-secondary" routerLink="/ficha">Volver</button>
+      <button type="button" class="btn btn-primary" (click)="guardarEdicionCambios(ficha)">Guardar</button>
     </div>
 
 

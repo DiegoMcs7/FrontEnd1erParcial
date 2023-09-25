@@ -80,8 +80,6 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
       this.personaService.agregarPersona(this.nuevaPersona);
       this.toastr.success('Se agregó una persona');
       this.nuevaPersona = new Persona();
-      this.cargarPersonas();
-      this.rerender()
     }
   }
 
@@ -93,6 +91,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
 
   guardarEdicionCambios(persona: Persona): void {
     this.personaService.editarPersona(this.edit_id, persona);
+    this.toastr.success('Se editó una persona');
     persona.editFieldName=true;
     this.rerender();
   }
@@ -104,6 +103,7 @@ export class PersonaComponent implements AfterViewInit, OnDestroy, OnInit {
 
   eliminarPersona(persona: Persona): void {
     this.personaService.eliminarPersona(persona.idPersona);
+    this.toastr.success('Se eliminó una persona');
     this.rerender();
   }
 

@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { listadatos } from '../model/datos';
 import { Ficha } from '../model/fichas';
-import { base_url } from '../base_url';
-import { tap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Persona } from '../model/paciente_doctor.model';
+import { Categoria } from '../model/categoria.model';
 @Injectable({
   providedIn: 'root'
 })
 export class ServicefichaService {
-  private api = base_url + 'stock-pwfe/fichaClinica';
 
   constructor(private angularFirestore: AngularFirestore,private http: HttpClient) { }
 
@@ -55,26 +53,52 @@ export class ServicefichaService {
 
   }
 
-  getAllfichas():Observable<listadatos<Ficha>>{
-    return this.http.get<listadatos<Ficha>>(this.api);
+  editarFicha(idFichaClinica: number, nuevaFicha: Ficha, Doctor: Persona, Paciente: Persona, Categoria: Categoria, Fecha:string) {
+    return this.angularFirestore
+      .collection("ficha-collection", ref => ref.where("idFichaClinica", "==", idFichaClinica))
+      .get()
+      .toPromise()
+      .then(querySnapshot => {
+        if (querySnapshot) {
+          const doc = querySnapshot.docs[0];
+          const ficha = doc.data() as Ficha;
+          const updateData: any = {}; // Objeto para almacenar los campos a actualizar
+
+          // Verificar si Doctor no es null antes de asignarlo
+          if (Doctor) {
+            updateData.idDoctor = JSON.parse(JSON.stringify(Doctor));
+          }
+          // Verificar si Paciente no es null antes de asignarlo
+          if (Paciente) {
+            updateData.idPaciente = JSON.parse(JSON.stringify(Paciente));
+          }
+          if (Categoria) {
+            updateData.idCategoria = JSON.parse(JSON.stringify(Categoria));
+          }
+          // Verificar si Fecha no es null antes de asignarlo
+          if (Fecha) {
+            updateData.fechaHora = Fecha;
+          }
+          if (nuevaFicha.motivoConsulta) {
+            updateData.motivoConsulta = nuevaFicha.motivoConsulta;
+          }
+          if (nuevaFicha.observacion) {
+            updateData.observacion = nuevaFicha.observacion;
+          }
+          if (nuevaFicha.diagnostico) {
+            updateData.diagnostico = nuevaFicha.diagnostico;
+          }
+          return doc.ref.update(updateData);
+        }else {
+          console.log("No se encontró ninguna reserva con idReserva igual a 3");
+          return null; // Manejar el caso en el que no se encuentra ninguna reserva
+        }
+      }).catch(error => {
+        console.error('Error al editar la ficha con idReserva 3:', error);
+      });
+
   }
-  postficha(ficha: Ficha):Observable<Ficha>{
-    console.log("headers: " + localStorage.getItem("userSession") ?? "" )
-    return this.http.post<Ficha>(this.api,ficha,{
-      headers:{usuario: localStorage.getItem("userSession") ?? ""}
-    }).pipe(
-      tap(
-        data => console.log("Agregado: " + data),
-        error => console.log("Error: " + error)
-      )
-    );
-  }
-  getFicha(idFichaClinica: number):Observable<Ficha>{
-    return this.http.get<Ficha>(this.api + '/' + idFichaClinica);
-  }
-  putFicha(ficha: Ficha):Observable<Ficha>{
-    return this.http.put<Ficha>(this.api,{'idFichaClinica': ficha.idFichaClinica, 'observacion': ficha.observacion});
-  }
+
 
 
 }

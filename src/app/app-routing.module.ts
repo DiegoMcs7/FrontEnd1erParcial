@@ -9,6 +9,7 @@ import { ReservaComponent } from './reservas/reservas.component';
 import { FichaComponent } from './ficha/ficha.component';
 import { ModificarfichaComponent } from './ficha/modificarficha/modificarficha.component';
 import { NuevafichaComponent } from './ficha/nuevaficha/nuevaficha.component';
+import { EditarfichaComponent } from './ficha/editarficha/editarficha.component';
 
 const routes: Routes = [
   {path: '', redirectTo : 'reservas', pathMatch : 'full'},
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: "reservas/:id/ficha", component: ModificarfichaComponent },
   { path: "ficha/nuevo",  component: NuevafichaComponent },
   { path: "ficha", component: FichaComponent  },
+  { path: "ficha/:id/editar",  component: EditarfichaComponent },
 ];
 
 @NgModule({
