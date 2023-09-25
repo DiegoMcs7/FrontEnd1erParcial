@@ -23,7 +23,7 @@ class Fecha {
   styleUrls: ['./reservas.component.css']
 })
 export class ReservaComponent implements OnInit {
-  public columns = ["Fecha","Hora inicio","Hora fin","Doctor","Paciente", "Acciones"];
+  public columns = ["Fecha","Hora inicio","Hora fin","Doctor","Paciente","Observacion","Asistencia","Estado", "Acciones"];
   public data: Reserva[] = [];
   reservas: Reserva[] = [];
   personas: Persona[] = [];

@@ -29,7 +29,7 @@ class Fecha {
 export class FichaComponent implements OnInit {
 
   public data: Ficha[] = [];
-  public columns = ["Fecha","Doctor","Paciente","Categoria","Acciones"];
+  public columns = ["Fecha","Doctor","Paciente","Categoria","Motivo de Consulta","Diagnostico","Observacion","Acciones"];
 
   categorias: Categoria [] = []
   categoria: Categoria = new Categoria()

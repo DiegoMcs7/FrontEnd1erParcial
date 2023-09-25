@@ -76,6 +76,9 @@
           <td>{{reserva.horaFin}}</td>
           <td>{{reserva.idDoctor.nombre + " " + reserva.idDoctor.apellido }}</td>
           <td>{{reserva.idPaciente.nombre + " " + reserva.idPaciente.apellido }}</td>
+          <td>{{reserva.observacion }}</td>
+          <td>{{reserva.flagAsistio }}</td>
+          <td>{{reserva.flagEstado }}</td>
           <td>
             <button class="btn btn-outline-success mx-2" [routerLink]="[reserva.idReserva, 'editar']">Editar</button>
             <button class="btn btn-outline-danger mx-2" (click)="cancelarReserva(reserva)" *ngIf="reserva.flagEstado === 'Activo' ">Cancelar</button>

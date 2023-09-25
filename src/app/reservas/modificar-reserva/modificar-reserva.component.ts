@@ -38,7 +38,6 @@ export class ModificarReservaComponent implements  OnInit  {
   fecha: Fecha = new Fecha();
   horaInicio: Hora = new Hora();
   horaFin: Hora = new Hora();
-  flagAsistio: boolean = true;
   doctor: Persona = new Persona();
   paciente: Persona = new Persona();
   nuevaPersona: Persona = new Persona();
@@ -106,6 +105,7 @@ export class ModificarReservaComponent implements  OnInit  {
       const horaFinStr = `${horaFin.hora}:00`;
       const doctor_edit = personas.find(persona => persona.idPersona === reserva.idDoctor?.idPersona);
       const paciente_edit = personas.find(persona => persona.idPersona === reserva.idPaciente?.idPersona);
+      console.log(reserva.flagAsistio);
       if (doctor_edit && paciente_edit) {
         this.reservaService.editarReserva(reserva.idReserva, reserva, doctor_edit, paciente_edit, fechaStr,horaFinStr,horaInicioStr);
         this.toastr.success('Se editó una reserva');

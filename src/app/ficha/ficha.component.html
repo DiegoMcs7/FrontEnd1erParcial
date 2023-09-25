@@ -84,6 +84,9 @@
       <td>{{ficha.idDoctor.nombre + " " + ficha.idDoctor.apellido }}</td>
       <td>{{ficha.idPaciente.nombre + " " + ficha.idPaciente.apellido }}</td>
       <td>{{ficha.idCategoria.descripcion }}</td>
+      <td>{{ficha.motivoConsulta }}</td>
+      <td>{{ficha.diagnostico }}</td>
+      <td>{{ficha.observacion }}</td>
       <td><button class="btn  btn-outline-success"  [routerLink]="[ficha.idFichaClinica,'editar']">Editar</button></td>
     </tr>
   </tbody>

@@ -37,6 +37,7 @@ export class ReservaService {
         horaInicio: nuevaReserva.horaInicio,
         horaFin: nuevaReserva.horaFin,
         flagEstado: nuevaReserva.flagEstado,
+        flagAsistio: nuevaReserva.flagAsistio,
       };
 
 
@@ -119,7 +120,11 @@ export class ReservaService {
           if (nuevaReserva.observacion) {
             updateData.observacion = nuevaReserva.observacion;
           }
+          console.log(nuevaReserva.flagAsistio);
+
           if (nuevaReserva.flagAsistio) {
+            updateData.flagAsistio = nuevaReserva.flagAsistio;
+          }else{
             updateData.flagAsistio = nuevaReserva.flagAsistio;
           }
           return doc.ref.update(updateData);
