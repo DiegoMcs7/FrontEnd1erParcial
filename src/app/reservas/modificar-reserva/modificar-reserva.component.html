@@ -9,20 +9,19 @@
               <div class="form-group col-6" >
                   <label for="doctor">Doctor</label>
                   <div class="input-group">
-                    <select class="form-control" id="doctor" name="doctor" [(ngModel)]="doctor">
-                      <option disabled selected>Selecciona un Doctor</option>
+                    <select class="form-control" id="doctor" name="doctor" [(ngModel)]="reserva.idDoctor.idPersona">
                       <ng-container *ngFor="let persona of personas">
-                        <option [ngValue]="persona" *ngIf="persona.flag_es_doctor && reserva.idDoctor.idPersona == persona.idPersona" [attr.selected]="reserva.idDoctor.idPersona">
-                            {{ persona.nombre }} {{ persona.apellido }}
+                        <option *ngIf="persona.flag_es_doctor" [ngValue]="persona.idPersona">
+                          {{ persona.nombre }} {{ persona.apellido }}
                         </option>
                       </ng-container>
                     </select>
                   </div>
               </div>
               <div class="form-group col-6" >
-                  <label for="doctor">Fecha</label>
+                  <label for="fecha">Fecha</label>
                   <div class="input-group">
-                    <input class="form-control"
+                    <input id="fecha" class="form-control"
                            name="dp" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="fecha"
                            (ngModelChange)="onDateChange()">
                     <div class="input-group-append">
@@ -35,10 +34,10 @@
               <div class="form-group col-6">
                   <label for="paciente">Paciente</label>
                   <div class="input-group">
-                    <select class="form-control" id="paciente" name="paciente" [(ngModel)]="paciente">
+                    <select class="form-control" id="paciente" name="paciente" [(ngModel)]="reserva.idPaciente.idPersona">
                       <option disabled selected>Selecciona un Paciente</option>
                       <ng-container *ngFor="let persona of personas">
-                          <option [ngValue]="persona" *ngIf="!persona.flag_es_doctor && reserva.idPaciente.idPersona == persona.idPersona" [attr.selected]="reserva.idPaciente.idPersona">
+                          <option [ngValue]="persona.idPersona" *ngIf="!persona.flag_es_doctor">
                             {{ persona.nombre }} {{ persona.apellido }}
                           </option>
                         </ng-container>
@@ -71,7 +70,7 @@
                   <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="asistio" (change)="toggleFlag()" [checked]="this.reserva.flagAsistio === 'S'">
                       <label class="form-check-label" for="flexCheckDefault">
-                        Asistió
+                        AsistiÃ³
                       </label>
                     </div>
               </div>

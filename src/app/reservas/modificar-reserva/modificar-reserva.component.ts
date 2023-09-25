@@ -97,8 +97,22 @@ export class ModificarReservaComponent implements  OnInit  {
   }
 
   guardarEdicionCambios(reserva: Reserva): void {
-    this.reservaService.editarReserva(this.edit_id, reserva);
-    reserva.editFieldName=true;
+    this.personaService.getPersonas().subscribe((personas: Persona[]) => {
+      const fecha = this.fecha;
+      const fechaStr = `${fecha.year}/${fecha.month}/${fecha.day}`;
+      const horaInicio = this.horaInicio;
+      const horaInicioStr = `${horaInicio.hora}:00`;
+      const horaFin = this.horaFin;
+      const horaFinStr = `${horaFin.hora}:00`;
+      const doctor_edit = personas.find(persona => persona.idPersona === reserva.idDoctor?.idPersona);
+      const paciente_edit = personas.find(persona => persona.idPersona === reserva.idPaciente?.idPersona);
+      if (doctor_edit && paciente_edit) {
+        this.reservaService.editarReserva(reserva.idReserva, reserva, doctor_edit, paciente_edit, fechaStr, horaInicioStr, horaFinStr);
+        reserva.editFieldName = true;
+      } else {
+        console.log('No se encontró un doctor o paciente válido.');
+      }
+    });
   }
 
   getDateString() {

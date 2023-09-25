@@ -86,33 +86,48 @@ export class ReservaService {
       });
   }
 
-  editarReserva(idReserva: number, nuevaReserva: Reserva) {
+  editarReserva(idReserva: number, nuevaReserva: Reserva, Doctor: Persona, Paciente: Persona, Fecha:string, horaFinStr:string, horaInicioStr:string) {
     return this.angularFirestore
       .collection("reserva-collection", ref => ref.where("idReserva", "==", idReserva))
       .get()
       .toPromise()
       .then(querySnapshot => {
         if (querySnapshot) {
-          const reservaDoc = querySnapshot.docs[0];
-          if (reservaDoc) {
-            return reservaDoc.ref.update({
-              idDoctor: JSON.parse(JSON.stringify(nuevaReserva.idDoctor)),
-              idPaciente: JSON.parse(JSON.stringify(nuevaReserva.idPaciente)),
-              fecha: nuevaReserva.fecha,
-              horaInicio: nuevaReserva.horaInicio,
-              horaFin: nuevaReserva.horaFin,
-              observacion: nuevaReserva.observacion
-            });
-          } else {
-            throw new Error("El documento de reserva no está definido");
+          const doc = querySnapshot.docs[0];
+          const reserva = doc.data() as Reserva;
+          console.log(reserva)
+          const updateData: any = {}; // Objeto para almacenar los campos a actualizar
+
+          // Verificar si Doctor no es null antes de asignarlo
+          if (Doctor) {
+            updateData.idDoctor = JSON.parse(JSON.stringify(Doctor));
           }
-        } else {
-          throw new Error(`No se encontró ninguna reserva con el nombre `);
+          // Verificar si Paciente no es null antes de asignarlo
+          if (Paciente) {
+            updateData.idPaciente = JSON.parse(JSON.stringify(Paciente));
+          }
+          // Verificar si Fecha no es null antes de asignarlo
+          if (Fecha) {
+            updateData.fecha = Fecha;
+          }
+          if (horaInicioStr) {
+            updateData.horaInicio = horaInicioStr;
+            }
+          if (horaFinStr) {
+            updateData.horaFin = horaFinStr;
+          }
+          if (nuevaReserva.observacion) {
+            updateData.observacion = nuevaReserva.observacion;
+          }
+          return doc.ref.update(updateData);
+        }else {
+          console.log("No se encontró ninguna reserva con idReserva igual a 3");
+          return null; // Manejar el caso en el que no se encuentra ninguna reserva
         }
-      })
-      .catch(error => {
-        console.error('Error al editar reserva por nombre:', error);
+      }).catch(error => {
+        console.error('Error al editar la reserva con idReserva 3:', error);
       });
+
   }
 
   modificarReserva(reserva: ReservaPutBody): Observable<void> {
